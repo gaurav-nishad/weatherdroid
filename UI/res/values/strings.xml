@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GUIDesign</string>
+    <string name="feels_like">体感:</string>
+    <string name="humidity">降水概率:</string>
+    <string name="wind">风力:</string>
+    <string name="temp">温度:</string>
+    <string name="wind_direction">风向:</string>
+</resources>
