@@ -27,16 +27,16 @@ import org.xml.sax.InputSource;
  * @author Rajab Ma<majianle@gmail.com>
  * 
  */
-public class NetQuery implements Queryable, Runnable {
-
+public class NetQuery implements Queryable {
+	/** Yahoo天气RSS请求URL */
 	public static final String YAHOO_URL = "http://weather.yahooapis.com/forecastrss?u=c&p=";
-
+	/** Weather.com 今日详情URL */
 	public static final String WEATHER_DETAIL_URL = "http://www.weather.com/weather/mpdwcr/dailydetails?locid=";
-
+	/** Weather.com 天气URL 前 */
 	public static final String WEATHER_URL_PREFIX = "http://xoap.weather.com/weather/local/";
-
-	public static final String WEATHER_URL_SUFFIX = "?prod=xoap&unit=c&dayf=7&par=1057677963&key=fcac442aff2dd9c0";
-
+	/** Weather.com 天气URL 后 */
+	public static final String WEATHER_URL_SUFFIX = "?cc=*prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0";
+	/** 查询地区编号 */
 	public static final String LOC_QUERY = "http://xoap.weather.com/search/search?where=";
 
 	InputSource ySource = null;
@@ -45,13 +45,8 @@ public class NetQuery implements Queryable, Runnable {
 
 	InputSource wDetailSource = null;
 
-	private String locid;
-
-	private WeatherData data;
 
 	private boolean over = false;
-
-	private Thread queryThread;
 
 	/*
 	 * （非 Javadoc）
@@ -59,15 +54,22 @@ public class NetQuery implements Queryable, Runnable {
 	 * @see cn.tearcry.api.weather.Queryable#query(java.lang.String,
 	 *      cn.tearcry.api.weather.WeatherData)
 	 */
-	public void query(String locid, WeatherData data) throws WeatherException {
-		this.locid = locid;
-		this.data = data;
-		queryThread.start();
+	public void query( String locid, WeatherData data)
+			throws WeatherException {
 
-	}
+		ySource = DataSourceManager.getInputSource(YAHOO_URL + locid);
+		new AuxiliaryParser(ySource, data).parse();
 
-	public NetQuery() {
-		queryThread = new Thread(this);
+		wTodaySource = DataSourceManager.getInputSource(WEATHER_URL_PREFIX
+				+ locid + WEATHER_URL_SUFFIX, DataSourceManager.ISO);
+		new TodayFutureParser(wTodaySource,data).parse();
+		
+		InputSource wDetailSource = DataSourceManager
+				.getInputSource(WEATHER_DETAIL_URL + locid);
+		new DetailedParser(wDetailSource, data).parse();
+
+		data.setParseOver(data.mDetailsParsed && data.mFutureParsed && data.mNowParsed
+				&& data.mTodayParsed);
 
 	}
 
@@ -77,12 +79,10 @@ public class NetQuery implements Queryable, Runnable {
 
 		try {
 			q.query("CHXX0141", data);
+			
 		} catch (WeatherException ex) {
-			// TODO 自动生成 catch 块
 			ex.printStackTrace();
 		}
-		while (!q.isOver())
-			;
 
 		HashMap<String, String> map = data.getTonightData();
 		Iterator<String> iter = map.keySet().iterator();
@@ -95,37 +95,6 @@ public class NetQuery implements Queryable, Runnable {
 
 	public boolean isOver() {
 		return over;
-	}
-
-	/*
-	 * （非 Javadoc）
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
-		try {
-
-			ySource = DataSourceManager.getInputSource(YAHOO_URL + locid);
-			wTodaySource = DataSourceManager.getInputSource(WEATHER_URL_PREFIX
-					+ locid + WEATHER_URL_SUFFIX, DataSourceManager.ISO);
-			wDetailSource = DataSourceManager.getInputSource(WEATHER_DETAIL_URL
-					+ locid);
-			if (ySource != null)
-				new NowParser(ySource, data).parse();
-
-			if (wDetailSource != null)
-				new DetailsParser(wDetailSource, data).parse();
-
-			if (wTodaySource != null)
-				new TodayFutureParser(wTodaySource, data).parse();
-
-			over = data.bDetailsParsed && data.bFutureParsed && data.bNowParsed
-					&& data.bTodayParsed;
-		} catch (WeatherException ex) {
-			// TODO 自动生成 catch 块
-			ex.printStackTrace();
-		}
-
 	}
 
 }
