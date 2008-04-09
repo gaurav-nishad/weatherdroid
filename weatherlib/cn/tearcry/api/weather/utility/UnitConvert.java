@@ -1,5 +1,6 @@
 package cn.tearcry.api.weather.utility;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,21 +41,28 @@ public class UnitConvert {
 			"E", "ESE", "ES", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW",
 			"NNW" };
 
-	private static final SimpleDateFormat OUT_FORMATTER = new SimpleDateFormat(
-			"yyyy/MM/dd HH:mm", Locale.US);
+	private static final String OUT_FORMATTER = "yyyy/MM/dd HH:mm";
 
-	public static final String convertTime(String format, String date) {
-		SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.US);
+	public static String convertTime(String informat, String date) {
+		return convertTime(informat, OUT_FORMATTER, date);
+	}
+
+	public static String convertTime(String informat, String outformat,
+			String date) {
+		SimpleDateFormat in_formatter = new SimpleDateFormat(informat,
+				Locale.US);
+		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat,
+				Locale.US);
 		GregorianCalendar now = new GregorianCalendar();
 		Date time = null;
 
 		String ret = null;
 		try {
-			time = formatter.parse(date);
-			ret = OUT_FORMATTER.format(time);
+			time = in_formatter.parse(date);
+			ret = out_formatter.format(time);
 		} catch (ParseException ex) {
 			ex.printStackTrace();
-			ret = OUT_FORMATTER.format(now.getTime());
+			ret = out_formatter.format(now.getTime());
 		}
 		return ret;
 	}
@@ -72,22 +80,25 @@ public class UnitConvert {
 	 *            相应的标准制单位
 	 * @return 转换后的(包括单位）
 	 */
-	private static String convert(int value, String unit, float ratio,
-			String metricUnit, String standardUnit) {
-		int ret = 0;
+	private static String convert(float value, String unit, float ratio,
+			String metricUnit, String standardUnit, boolean needRound) {
+		float ret = 0.0f;
+		String con;
 		String ut = null;
 
 		// 公制->标准制
 		if (fromMetricSystem(unit)) {
-			ret = Math.round(value / ratio);
+			ret = value / ratio;
 			ut = standardUnit;
 		} else {
 			// 标准制->公制
-			ret = Math.round(value * ratio);
+			ret = value * ratio;
 			ut = metricUnit;
 		}
 
-		return ret + " " + ut;
+		return needRound ? Math.round(ret) + " " + ut : (float) (Math
+				.round(ret * 100))
+				/ 100 + " " + ut;
 
 	}
 
@@ -141,7 +152,7 @@ public class UnitConvert {
 			return value + " " + unit;
 		}
 		return convert(val, unit, 1.609334f, WeatherKey.Unit.KPH,
-				WeatherKey.Unit.MPH);
+				WeatherKey.Unit.MPH, true);
 	}
 
 	public static String convertPressure(String value, String unit) {
@@ -153,7 +164,7 @@ public class UnitConvert {
 		}
 
 		return convert(val, unit, 33.86389f, WeatherKey.Unit.HPA,
-				WeatherKey.Unit.INCHES);
+				WeatherKey.Unit.INCHES, false);
 	}
 
 	/**
@@ -190,11 +201,34 @@ public class UnitConvert {
 		float stepSize = 360 / WIND_DIRECTIONS.length;
 		int index = Math.round(deg / stepSize);
 		return WIND_DIRECTIONS[index % 16];
+	}
+
+	public static String convertPressureState(String state) {
+		int st = 0;
+		try {
+			Integer.parseInt(state);
+		} catch (NumberFormatException ex) {
+
+		}
+		String ret = "";
+		switch (st) {
+		case 0:
+			ret = "→";
+			break;
+		case 1:
+			ret = "↑";
+			break;
+		case 2:
+			ret = "↓";
+			break;
+		default:
+			ret = "→";
+		}
+		return ret;
 
 	}
 
 	public static void main(String[] args) {
-		System.out
-				.println(convertPressure("28", WeatherKey.Unit.INCHES).split(" ")[0]);
+		System.out.println(convertPressure("1000", WeatherKey.Unit.HPA));
 	}
 }

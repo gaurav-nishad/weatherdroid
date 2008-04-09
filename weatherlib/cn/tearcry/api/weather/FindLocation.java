@@ -34,21 +34,21 @@ import org.xml.sax.SAXException;
 
 /**
  * 查找城市编号
- * @author  Rajab Ma<majianle@gmail.com>
- *
+ * 
+ * @author Rajab Ma<majianle@gmail.com>
+ * 
  */
 public class FindLocation {
-	
-	
-	
+
 	/**
-	 * @param xml 
+	 * @param xml
 	 * @return
-	 * @throws WeatherException 查询失败抛出
+	 * @throws WeatherException
+	 *             查询失败抛出
 	 */
 	public static HashMap<String, String> getLocList(InputSource source)
 			throws WeatherException {
-		if(source==null)
+		if (source == null)
 			throw new WeatherException("数据源为空");
 		Document doc = null;
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -61,37 +61,34 @@ public class FindLocation {
 			Element root = (Element) doc.getDocumentElement();
 			NodeList loc = root.getElementsByTagName("loc");
 			loclist = new HashMap<String, String>();
-			
+
 			for (int i = 0; i < loc.getLength(); i++) {
 				Element elem = (Element) loc.item(i);
 				loclist.put(elem.getAttribute("id"), elem.getFirstChild()
 						.getNodeValue());
 			}
-			
-			root=null;
-			doc=null;
-			db=null;
-			
+
+			root = null;
+			doc = null;
+			db = null;
 
 		} catch (ParserConfigurationException ex) {
-			// TODO 自动生成 catch 块
 			ex.printStackTrace();
 		} catch (SAXException ex) {
 			throw new WeatherException("查询失败");
 		} catch (IOException ex) {
-			// TODO 自动生成 catch 块
 			ex.printStackTrace();
 		}
 
 		return loclist;
 	}
-	
-	
+
 	public static void main(String[] args) {
 		try {
 
-			HashMap<String, String> loc = FindLocation.getLocList(DataSourceManager
-					.getInputSource(new File("D:\\citylist.xml")));
+			HashMap<String, String> loc = FindLocation
+					.getLocList(DataSourceManager.getInputSource(new File(
+							"D:\\citylist.xml")));
 			Iterator<String> iter = loc.keySet().iterator();
 			while (iter.hasNext()) {
 				String id = iter.next();
@@ -102,4 +99,5 @@ public class FindLocation {
 
 		}
 	}
+
 }
