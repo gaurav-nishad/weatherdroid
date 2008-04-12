@@ -80,41 +80,21 @@ public class AuxiliaryHanlder extends DefaultHandler {
 	private boolean lat = false;
 
 	private boolean lon = false;
+
 	private HashMap<String, String> nowData;
-	
+
 	private WeatherData wData;
 
 	public AuxiliaryHanlder(WeatherData wData) {
 		nowData = wData.getNowData();
 		headData = wData.getHeadData();
-		this.wData=wData;
-	}
-
-	public void characters(char[] ch, int start, int length) {
-		if (lat) {
-			nowData.put(WeatherKey.LATITUDE, new String(ch, start, length));
-		} else if (lon) {
-			nowData.put(WeatherKey.LONGITUDE, new String(ch, start, length));
-		}
-		
-	}
-
-	public void endElement(String uri, String localName, String qName) {
-		if (qName.equalsIgnoreCase("geo:lat")) {
-			lat = false;
-		} else if (qName.equalsIgnoreCase("geo:long")) {
-			lon = false;
-		}else if(qName.equals("yweather:condition"))
-			wData.mNowParsed=true;
-
+		this.wData = wData;
 	}
 
 	public void startElement(String uri, String localName, String qName,
 			Attributes attr) {
-		// 地区信息放入头部
-		if (qName.equalsIgnoreCase("yweather:location")) {
-			headData.put(WeatherKey.LOCATION, attr.getValue(0));
-		} else if (qName.equalsIgnoreCase("yweather:wind")) {
+
+		if (qName.equalsIgnoreCase("yweather:wind")) {
 			// 风向
 			nowData.put(WeatherKey.WIND_DIRECTION, UnitConvert
 					.converWindDirection(attr.getValue(1)));
@@ -122,7 +102,7 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			nowData.put(WeatherKey.WIND_SPEED, attr.getValue(2));
 		} else if (qName.equalsIgnoreCase("yweather:atmosphere")) {
 			// 湿度
-			nowData.put(WeatherKey.HUMIDITY, attr.getValue(0)+"%");
+			nowData.put(WeatherKey.HUMIDITY, attr.getValue(0) + "%");
 			// 能见度
 			nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
 			// 气压
@@ -130,13 +110,6 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			// 气压描述
 			nowData.put(WeatherKey.PREESURE_STATE, UnitConvert
 					.convertPressureState(attr.getValue(3)));
-		} else if (qName.equalsIgnoreCase("yweather:astronomy")) {
-			// 日出时间
-			headData.put(WeatherKey.SUN_RISE, UnitConvert.convertTime("k:mm a",
-					"H:mm", attr.getValue(0)));
-			// 日落时间
-			headData.put(WeatherKey.SUN_SET, UnitConvert.convertTime("k:mm a",
-					"H:mm", attr.getValue(1)));
 		} else if (qName.equalsIgnoreCase("geo:lat")) {
 			// 纬度
 			lat = true;
@@ -149,10 +122,28 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			// 图标
 			nowData.put(WeatherKey.ICON, attr.getValue(1));
 			nowData.put(WeatherKey.TEMPERATURE, attr.getValue(2));
-			headData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
-					"EEE, d MMM yyyy h:mm a z", attr.getValue(3)));
 
 		}
 
 	}
+
+	public void characters(char[] ch, int start, int length) {
+		if (lat) {
+			nowData.put(WeatherKey.LATITUDE, new String(ch, start, length));
+		} else if (lon) {
+			nowData.put(WeatherKey.LONGITUDE, new String(ch, start, length));
+		}
+
+	}
+
+	public void endElement(String uri, String localName, String qName) {
+		if (qName.equalsIgnoreCase("geo:lat")) {
+			lat = false;
+		} else if (qName.equalsIgnoreCase("geo:long")) {
+			lon = false;
+		} else if (qName.equals("yweather:condition"))
+			wData.mNowParsed = true;
+
+	}
+
 }

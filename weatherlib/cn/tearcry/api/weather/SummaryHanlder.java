@@ -180,12 +180,19 @@ public class SummaryHanlder extends DefaultHandler {
 		} else if (stack.getFirst().equalsIgnoreCase("r")
 				&& stack.contains("bar")) {
 			nowData.put(WeatherKey.PREESURE, new String(ch, start, length));
+		} else if (stack.getFirst().equalsIgnoreCase("d")
+				&& stack.contains("bar")) {
+			String state = new String(ch, start, length);
+			if (state.equals(WeatherKey.NA))
+				nowData.put(WeatherKey.PREESURE_STATE, "→");
 		}
 
 		else if (stack.getFirst().equalsIgnoreCase("s")
 				&& stack.contains("wind")) { // 速度，判断栈中是否有wind来判断是风速，因为s还有其他的速度
 			String speed = new String(ch, start, length);
-			if (today) {
+			if (now) {
+				nowData.put(WeatherKey.WIND_SPEED, speed);
+			} else if (today) {
 				if (day)
 					todayData.put(WeatherKey.WIND_SPEED, speed);
 				else
@@ -198,7 +205,7 @@ public class SummaryHanlder extends DefaultHandler {
 			String t = new String(ch, start, length);
 			if (!stack.contains("wind"))// 不包含wind 说明是天气描述
 			{
-				if (now) {
+				if (now&&!stack.contains("moon")&&!stack.contains("uv")) {
 					nowData.put(WeatherKey.DESCRIPTION, t);
 				} else if (today) {
 					if (day)
@@ -210,7 +217,9 @@ public class SummaryHanlder extends DefaultHandler {
 				}
 
 			} else {
-				if (today) {
+				if (now) {
+					nowData.put(WeatherKey.WIND_DIRECTION, t);
+				} else if (today) {
 					if (day)
 						todayData.put(WeatherKey.WIND_DIRECTION, t);
 					else
@@ -221,7 +230,8 @@ public class SummaryHanlder extends DefaultHandler {
 
 		} else if (stack.getFirst().equalsIgnoreCase("hmid")) { // 湿度
 			if (now)
-				nowData.put(WeatherKey.HUMIDITY, new String(ch, start, length));
+				nowData.put(WeatherKey.HUMIDITY, new String(ch, start, length)
+						+ "%");
 			if (today) {
 				if (day)
 					todayData.put(WeatherKey.HUMIDITY, new String(ch, start,
@@ -281,14 +291,14 @@ public class SummaryHanlder extends DefaultHandler {
 			DefaultHandler hanlder = new SummaryHanlder(data);
 			xr.setContentHandler(hanlder);
 
-			xr.parse(DataSourceManager.getInputSource(new File(
-					"d:\\CHXX0141_cc.xml")));
+		
 
-			/*
-			 * xr .parse(DataSourceManager
-			 * .getInputSource("http://xoap.weather.com/weather/local/chxx0141?prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0"));
-			 */
-			System.out.println("now/today/future: " + data.mNowParsed+"/"+data.mTodayParsed+"/"+data.mFutureParsed);
+//			xr
+//					.parse(DataSourceManager
+//							.getInputSource("http://xoap.weather.com/weather/local/chxx0141?prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0"));
+				xr.parse(DataSourceManager.getInputSource(new File("d:\\sum.xml")));
+			System.out.println("now/today/future: " + data.mNowParsed + "/"
+					+ data.mTodayParsed + "/" + data.mFutureParsed);
 
 			HashMap<String, String> head = data.getNowData();
 			Iterator<String> ithead = head.keySet().iterator();

@@ -51,7 +51,6 @@ public class WeatherData {
 	/** 今日天气 */
 	private HashMap<String, String> mTodayData;
 
-
 	protected boolean mDetailsParsed;
 
 	protected boolean mTodayParsed;
@@ -76,6 +75,7 @@ public class WeatherData {
 		mDetailsParsed = false;
 		mFutureParsed = false;
 		mTodayParsed = false;
+		mHeadData.put(WeatherKey.UNIT_FORM, WeatherKey.Unit.METRIC);
 	}
 
 	/**
@@ -135,14 +135,11 @@ public class WeatherData {
 	}
 
 	/**
-	 * @param parseOver 要设置的 parseOver
+	 * @param parseOver
+	 *            要设置的 parseOver
 	 */
 	protected void setParseOver(boolean parseOver) {
 		this.parseOver = parseOver;
 	}
-
-	
-	
-	
 
 }

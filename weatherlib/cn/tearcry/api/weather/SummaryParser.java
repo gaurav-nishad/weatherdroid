@@ -28,7 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author rajab
  * 
  */
-public class SummayParser implements Parser {
+public class SummaryParser implements Parser {
 
 	private InputSource is;
 
@@ -43,7 +43,7 @@ public class SummayParser implements Parser {
 		SAXParserFactory spf = null;
 		SAXParser sp = null;
 		spf = SAXParserFactory.newInstance();
-		DefaultHandler hanlder = new TodayFutureHanlder(wData);
+		DefaultHandler hanlder = new SummaryHanlder(wData);
 		try {
 			sp = spf.newSAXParser();
 			sp.parse(is, hanlder);
@@ -56,7 +56,7 @@ public class SummayParser implements Parser {
 		}
 	}
 
-	public SummayParser(InputSource is, WeatherData wData)
+	public SummaryParser(InputSource is, WeatherData wData)
 			throws WeatherException {
 		if (is != null)
 			this.is = is;
