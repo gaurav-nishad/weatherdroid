@@ -1,6 +1,5 @@
 package cn.tearcry.api.weather.utility;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -178,7 +177,8 @@ public class UnitConvert {
 		if (unit.equalsIgnoreCase(WeatherKey.Unit.KM)
 				|| unit.equalsIgnoreCase(WeatherKey.Unit.Celsius)
 				|| unit.equalsIgnoreCase(WeatherKey.Unit.KPH)
-				|| unit.equalsIgnoreCase(WeatherKey.Unit.HPA))
+				|| unit.equalsIgnoreCase(WeatherKey.Unit.HPA)
+				|| unit.equalsIgnoreCase(WeatherKey.Unit.METRIC))
 			return true;
 		else
 			return false;

@@ -84,6 +84,14 @@ public class LocationHanlder extends DefaultHandler {
 
 	}
 
+	public void startElement(String uri, String localName, String qName,
+			Attributes attr) {
+		if (qName.equalsIgnoreCase("loc")) {
+			id = attr.getValue(0);
+			loc = true;
+		}
+	}
+
 	public void characters(char[] ch, int start, int length) {
 		if (loc) {
 			current = new HashMap<String, String>();
@@ -102,11 +110,4 @@ public class LocationHanlder extends DefaultHandler {
 		return loclist;
 	}
 
-	public void startElement(String uri, String localName, String qName,
-			Attributes attr) {
-		if (qName.equalsIgnoreCase("loc")) {
-			id = attr.getValue(0);
-			loc = true;
-		}
-	}
 }

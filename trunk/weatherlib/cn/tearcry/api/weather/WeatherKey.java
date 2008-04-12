@@ -23,104 +23,97 @@ package cn.tearcry.api.weather;
  */
 public class WeatherKey {
 	/** 地区编号 */
-	public static final String LOCATION_ID = "locID";
+	public static final String LOCATION_ID = "Location ID";
 
 	/** 地名 */
-	public static final String LOCATION = "location";
+	public static final String LOCATION = "Location";
 
-	/** 标准制 */
-	public static final String STANDARD = "standard";
-
-	/** 公制 */
-	public static final String METRIC = "metric";
+	/** 风力 */
+	public static final String WIND = "Wind";
 
 	/** 风速 */
-	public static final String WIND_SPEED = "wind_speed";
+	public static final String WIND_SPEED = "Wind Speed";
 
 	/** 风向 */
-	public static final String WIND_DIRECTION = "wind_direction";
+	public static final String WIND_DIRECTION = "Wind Direction";
 
 	/** 时间 */
-	public static final String TIME = "time";
+	public static final String TIME = "Time";
 
 	/** 日出时间 */
-	public static final String SUN_RISE = "sunrise";
+	public static final String SUN_RISE = "Sunrise";
 
 	/** 日落时间 */
-	public static final String SUN_SET = "surset";
+	public static final String SUN_SET = "Surset";
 
 	/**
 	 * 经度:<br>
 	 * <i>东经为正，西经为负 </i>
 	 */
-	public static final String LONGITUDE = "longitude";
+	public static final String LONGITUDE = "Longitude";
 
 	/**
 	 * 纬度:<br>
 	 * <i>北纬为正，南纬为负 </i>
 	 */
-	public static final String LATITUDE = "latitude";
+	public static final String LATITUDE = "Latitude";
 
 	/** 最后更新时间 */
-	public static final String LAST_UPDATE = "lsup";
+	public static final String LAST_UPDATE = "Last_Update_Time";
 
 	/** 平均温度 */
-	public static final String TEMPERATURE = "tmp";
+	public static final String TEMPERATURE = "Temperature";
 
 	/** 最高温度 */
-	public static final String HIGH_TEMP = "hi";
+	public static final String HIGH_TEMP = "High Temperature";
 
 	/** 最低温度 */
-	public static final String LOW_TEMP = "low";
+	public static final String LOW_TEMP = "Low Temperature";
 
 	/** 体感温度 */
-	public static final String FEELS_LIKE = "flik";
+	public static final String FEELS_LIKE = "Feels Like";
 
 	/**
 	 * 时区:<br>
 	 * <i>向东为正，向西方为负 </i>
 	 */
-	public static final String TIMEZONE = "zone";
+	public static final String TIMEZONE = "Time Zone";
 
 	/** 气压 具体数字 */
-	public static final String PREESURE = "preesure";
+	public static final String PREESURE = "Preesure";
 
 	/** 气压描述 上升或下降 */
-	public static final String PREESURE_STATE = "pressure_state";
+	public static final String PREESURE_STATE = "Preesure State";
 
 	/** 天气情况图标 */
-	public static final String ICON = "icon";
+	public static final String ICON = "Icon";
 
 	/** 天气状况 */
-	public static final String DESCRIPTION = "desc";
+	public static final String DESCRIPTION = "Description";
 
 	/** 能见度 */
-	public static final String VISIBILITY = "vis";
+	public static final String VISIBILITY = "Visibility";
 
 	/** 相对湿度 */
-	public static final String HUMIDITY = "hmid";
-
-	/** 露点 */
-	public static final String DEW_POINT = "dewp";
+	public static final String HUMIDITY = "Humidity";
 
 	/** 紫外线强度描述（文字) */
-	public static final String UV = "uv";
+	public static final String UV = "UV";
 
 	/** 降水概率 */
-	public static final String PRECIP_CHANCE = "ppcp";
+	public static final String PRECIP_CHANCE = "Precipition Chance";
 
 	/** 观察站 */
-	public static final String OBSERVATION_STATION = "obst";
+	public static final String OBSERVATION_STATION = "Observation Station";
 
 	/** 不可用 */
 	public static final String NA = "N/A";
 
 	public static final String LOGTAG = "Weatherdroid";
 
-	public static class Unit {
-		public static final String F = "F";
+	public static final String UNIT_FORM = "Unit_Form";
 
-		public static final String C = "C";
+	public static class Unit {
 
 		public static final String UNIT_DISTANCE = "ud";
 
@@ -140,13 +133,17 @@ public class WeatherKey {
 
 		public static final String Celsius = "°C";
 
-		public static final String MILES = "mi";
+		public static final String MILES = "miles";
 
 		public static final String KPH = "km/h";
 
 		public static final String HPA = "hPa";
 
 		public static final String INCHES = "inches";
+
+		public static final String STANDARD = "Standard";
+
+		public static final String METRIC = "Metric";
 
 	}
 
