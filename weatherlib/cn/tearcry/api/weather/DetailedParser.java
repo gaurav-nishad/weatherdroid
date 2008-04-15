@@ -19,6 +19,7 @@ package cn.tearcry.api.weather;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class DetailedParser implements Parser {
 
 	public static void main(String[] args) {
 
-		File file = new File("D:\\today.txt");
+		File file = new File("D:\\todaydf.txt");
 		WeatherData wd = new WeatherData();
 		InputSource source = null;
 		try {
@@ -49,7 +50,9 @@ public class DetailedParser implements Parser {
 			// DataSourceManager.getInputSource("http://www.weather.com/weather/mpdwcr/dailydetails?locid=CHXX0141");
 			source = DataSourceManager.getInputSource(file);
 			new DetailedParser(source, wd).parse();
-		} catch (WeatherException ex) {
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}catch(WeatherException ex) {
 			ex.printStackTrace();
 		}
 
@@ -81,7 +84,7 @@ public class DetailedParser implements Parser {
 
 	public void parse() throws WeatherException {
 		if (source == null) {
-			throw new WeatherException("Today details parse failed.Cause:InputSource is null");
+			throw new WeatherException("Today details parse failed. Cause:InputSource is null");
 		}
 		String str = null;
 		StringBuilder sb = null;

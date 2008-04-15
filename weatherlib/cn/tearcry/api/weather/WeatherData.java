@@ -75,7 +75,7 @@ public class WeatherData {
 		mDetailsParsed = false;
 		mFutureParsed = false;
 		mTodayParsed = false;
-		mHeadData.put(WeatherKey.UNIT_FORM, WeatherKey.Unit.METRIC);
+	
 	}
 
 	/**
@@ -131,15 +131,7 @@ public class WeatherData {
 	 * @return parseOver
 	 */
 	public boolean isParseOver() {
-		return parseOver;
-	}
-
-	/**
-	 * @param parseOver
-	 *            要设置的 parseOver
-	 */
-	protected void setParseOver(boolean parseOver) {
-		this.parseOver = parseOver;
+		return mDetailsParsed && mFutureParsed && mNowParsed && mNowParsed;
 	}
 
 }

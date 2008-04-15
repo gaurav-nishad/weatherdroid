@@ -19,6 +19,7 @@
 package cn.tearcry.api.weather;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,7 +206,7 @@ public class SummaryHanlder extends DefaultHandler {
 			String t = new String(ch, start, length);
 			if (!stack.contains("wind"))// 不包含wind 说明是天气描述
 			{
-				if (now&&!stack.contains("moon")&&!stack.contains("uv")) {
+				if (now && !stack.contains("moon") && !stack.contains("uv")) {
 					nowData.put(WeatherKey.DESCRIPTION, t);
 				} else if (today) {
 					if (day)
@@ -291,22 +292,20 @@ public class SummaryHanlder extends DefaultHandler {
 			DefaultHandler hanlder = new SummaryHanlder(data);
 			xr.setContentHandler(hanlder);
 
-		
-
-//			xr
-//					.parse(DataSourceManager
-//							.getInputSource("http://xoap.weather.com/weather/local/chxx0141?prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0"));
-				xr.parse(DataSourceManager.getInputSource(new File("d:\\sum.xml")));
+			// xr
+			// .parse(DataSourceManager
+			// .getInputSource("http://xoap.weather.com/weather/local/chxx0141?prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0"));
+			xr.parse(DataSourceManager.getInputSource(new File("d:\\04_09_xian_sum.xml")));
 			System.out.println("now/today/future: " + data.mNowParsed + "/"
 					+ data.mTodayParsed + "/" + data.mFutureParsed);
 
-			HashMap<String, String> head = data.getNowData();
+			HashMap<String, String> head = data.getTodayData();
 			Iterator<String> ithead = head.keySet().iterator();
 			while (ithead.hasNext()) {
 				String k = ithead.next();
 				System.out.println(k + ":" + head.get(k));
 			}
-			ArrayList<HashMap<String, String>> future = data.getFutureData();
+			/*ArrayList<HashMap<String, String>> future = data.getFutureData();
 			for (int i = 0; i < future.size(); i++) {
 				HashMap<String, String> map = future.get(i);
 				Iterator<String> iter = map.keySet().iterator();
@@ -315,15 +314,13 @@ public class SummaryHanlder extends DefaultHandler {
 					String key = iter.next();
 					System.out.println(key + ":" + map.get(key));
 				}
-			}
+			}*/
 
 		} catch (ParserConfigurationException ex) {
 			ex.printStackTrace();
 		} catch (SAXException ex) {
 			ex.printStackTrace();
 		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (WeatherException ex) {
 			ex.printStackTrace();
 		}
 	}

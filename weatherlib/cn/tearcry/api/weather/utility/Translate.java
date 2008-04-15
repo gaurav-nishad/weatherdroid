@@ -1,5 +1,6 @@
 package cn.tearcry.api.weather.utility;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -74,7 +75,10 @@ public class Translate {
     	System.out.println(currentDir);
         return str;
     }
-	
+    
+    public void translate(HashMap map) {
+    	
+    }
 	public static void main(String[] args) {
 		System.out.println(Translate.getText("seoul", Locale.SIMPLIFIED_CHINESE
 				.toString()));
