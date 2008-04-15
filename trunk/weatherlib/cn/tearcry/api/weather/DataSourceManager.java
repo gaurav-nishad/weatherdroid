@@ -1,14 +1,11 @@
 package cn.tearcry.api.weather;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -56,97 +53,39 @@ public class DataSourceManager {
 			}
 	}
 
-	public static InputSource getInputSource(File file) throws WeatherException {
+	public static InputSource getInputSource(File file) throws IOException {
 		return getInputSource(file, UTF);
 
 	}
 
 	public static InputSource getInputSource(File file, String charset)
-			throws WeatherException {
+			throws IOException {
 		InputSource source = null;
 		if (!file.exists())
 			return null;
-		try {
-			source = new InputSource(new BufferedInputStream(
-					new FileInputStream(file)));
-			source.setEncoding(charset);
-		} catch (FileNotFoundException ex) {
-			throw new WeatherException(ex.getMessage());
-		}
+
+		source = new InputSource(new BufferedInputStream(new FileInputStream(
+				file)));
+		source.setEncoding(charset);
+
 		return source;
 
 	}
 
-	public static InputSource getInputSource(String addr)
-			throws WeatherException {
+	public static InputSource getInputSource(String addr) throws IOException,
+			MalformedURLException {
 		return getInputSource(addr, UTF);
 	}
 
 	public static InputSource getInputSource(String addr, String charset)
-			throws WeatherException {
-		URL url = null;
-		// HttpURLConnection connection=null;
+			throws IOException, MalformedURLException {
+		URL url = new URL(addr);
 		InputSource source = null;
-		try {
-			url = new URL(addr);
-			// connection=(HttpURLConnection) url.openConnection();
-			source = new InputSource(new BufferedInputStream(url.openStream()));
-			source.setEncoding(charset);
 
-		} catch (MalformedURLException ex) {
-			throw new WeatherException("指定的链接错误");
-		} catch (IOException ex) {
-			throw new WeatherException("连接错误");
-		}
+		source = new InputSource(new BufferedInputStream(url.openStream()));
+		source.setEncoding(charset);
 
 		return source;
-	}
-
-	public static String getString(File file) {
-		if (!file.exists())
-			return null;
-		BufferedReader reader = null;
-		StringBuffer result = null;
-
-		try {
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file)));
-			result = new StringBuffer("");
-			String str = null;
-			while ((str = reader.readLine()) != null)
-				result.append(str);
-
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return result.toString();
-	}
-
-	public static String getString(String addr) throws WeatherException {
-		URL url = null;
-		HttpURLConnection connection = null;
-		BufferedReader reader;
-		String str = null;
-		StringBuffer result = null;
-		try {
-			url = new URL(addr);
-			connection = (HttpURLConnection) url.openConnection();
-			reader = new BufferedReader(new InputStreamReader(connection
-					.getInputStream()));
-			result = new StringBuffer("");
-			while ((str = reader.readLine()) != null)
-				result.append(str);
-
-		} catch (MalformedURLException ex) {
-			throw new WeatherException("指定的链接错误");
-		} catch (IOException ex) {
-			throw new WeatherException("连接错误");
-		}
-
-		return result.toString();
-
 	}
 
 }

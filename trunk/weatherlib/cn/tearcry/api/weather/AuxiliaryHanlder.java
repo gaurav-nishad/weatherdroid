@@ -69,8 +69,6 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			ex.printStackTrace();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		} catch (WeatherException ex) {
-			ex.printStackTrace();
 		}
 
 	}

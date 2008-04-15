@@ -1,5 +1,6 @@
 /* 
- * Copyright (C) 2008 Rajab Ma <majianle@gmail.com>
+ * Copyright (C) 2008 Ma JianLe
+ * majianle@gmail.com
  * http://www.tearcry.cn
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,87 +18,37 @@
  */
 package cn.tearcry.api.weather;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * 查找城市编号
- * 
- * @author Rajab Ma<majianle@gmail.com>
+ * @author rajab
  * 
  */
-public class FindLocation {
+public class FindLocation extends DefaultHandler {
+	public static ArrayList<HashMap<String, String>> find(String locid)
+			throws Exception {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser sp;
+		ArrayList<HashMap<String, String>> location = null;
 
-	/**
-	 * @param xml
-	 * @return
-	 * @throws WeatherException
-	 *             查询失败抛出
-	 */
-	public static HashMap<String, String> getLocList(InputSource source)
-			throws WeatherException {
-		if (source == null)
-			throw new WeatherException("数据源为空");
-		Document doc = null;
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = null;
-		HashMap<String, String> loclist = null;
-
-		try {
-			db = dbf.newDocumentBuilder();
-			doc = db.parse(source);
-			Element root = (Element) doc.getDocumentElement();
-			NodeList loc = root.getElementsByTagName("loc");
-			loclist = new HashMap<String, String>();
-
-			for (int i = 0; i < loc.getLength(); i++) {
-				Element elem = (Element) loc.item(i);
-				loclist.put(elem.getAttribute("id"), elem.getFirstChild()
-						.getNodeValue());
-			}
-
-			root = null;
-			doc = null;
-			db = null;
-
-		} catch (ParserConfigurationException ex) {
-			ex.printStackTrace();
-		} catch (SAXException ex) {
-			throw new WeatherException("查询失败");
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-
-		return loclist;
-	}
-
-	public static void main(String[] args) {
-		try {
-
-			HashMap<String, String> loc = FindLocation
-					.getLocList(DataSourceManager.getInputSource(new File(
-							"D:\\citylist.xml")));
-			Iterator<String> iter = loc.keySet().iterator();
-			while (iter.hasNext()) {
-				String id = iter.next();
-				System.out.println(id + ":" + loc.get(id));
-			}
-
-		} catch (WeatherException ex) {
-
-		}
+		sp = spf.newSAXParser();
+		XMLReader xr = sp.getXMLReader();
+		LocationHandler hanlder = new LocationHandler();
+		xr.setContentHandler(hanlder);
+		xr.parse(DataSourceManager.getInputSource(WeatherKey.Url.LOC_QUERY
+				+ locid));
+		location = hanlder.getLocList();
+		return location;
 	}
 
 }
