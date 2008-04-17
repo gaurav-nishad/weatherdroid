@@ -123,54 +123,75 @@ public class WeatherKey {
 
 	/** 不可用 */
 	public static final String NA = "N/A";
-	
+
 	/** 日志标签 */
 	public static final String LOGTAG = "Weatherdroid";
-	
+
 	/** 语言 */
 	public static final String LANGUAGE = "Language";
 
+	/** 未来天数 */
+	public static final String FUTURE_DAYS = "Future Days";
+
+	/** 详情小时 */
+	public static final String DETAILED_HOURS = "Detailed Hours";
+
 	/** 单位 */
 	public static class Unit {
-		
+
 		/** 距离单位 */
 		public static final String UNIT_DISTANCE = "ud";
+
 		/** 速度单位 */
 		public static final String UNIT_SPEED = "us";
+
 		/** 气压单位 */
 		public static final String UNIT_PREESURE = "up";
+
 		/** 温度单位 */
 		public static final String UNIT_TEMP = "ut";
-	
+
 		/** 公里 */
 		public static final String KM = "km";
+
 		/** 英里/小时 */
 		public static final String MPH = "mph";
+
 		/** 华氏温度 */
 		public static final String Fahrenheit = "°F";
+
 		/** 摄氏温度 */
 		public static final String Celsius = "°C";
+
 		/** 英里 */
 		public static final String MILES = "miles";
+
 		/** 公里/小时 */
 		public static final String KPH = "km/h";
+
 		/** 百帕 */
 		public static final String HPA = "hPa";
+
 		/** 英寸 */
 		public static final String INCHES = "inches";
+
 		/** 标准制 */
 		public static final String STANDARD = "Standard";
+
 		/** 公制 */
 		public static final String METRIC = "Metric";
+
 		/** 时间格式 */
 		public static final String Time_FORMAT = "Time Format";
+
 		/** 24小时制 */
 		public static final String TIME_24 = "24";
+
 		/** 12小时制 */
 		public static final String TIME_12 = "12";
 
 	}
-	
+
 	public static class Url {
 		/** Yahoo天气RSS请求URL */
 		public static final String YAHOO_URL = "http://weather.yahooapis.com/forecastrss?u=c&p=";

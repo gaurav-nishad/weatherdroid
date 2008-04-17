@@ -305,7 +305,7 @@ public class SummaryHanlder extends DefaultHandler {
 				String k = ithead.next();
 				System.out.println(k + ":" + head.get(k));
 			}
-			/*ArrayList<HashMap<String, String>> future = data.getFutureData();
+			ArrayList<HashMap<String, String>> future = data.getFutureData();
 			for (int i = 0; i < future.size(); i++) {
 				HashMap<String, String> map = future.get(i);
 				Iterator<String> iter = map.keySet().iterator();
@@ -314,7 +314,7 @@ public class SummaryHanlder extends DefaultHandler {
 					String key = iter.next();
 					System.out.println(key + ":" + map.get(key));
 				}
-			}*/
+			}
 
 		} catch (ParserConfigurationException ex) {
 			ex.printStackTrace();
