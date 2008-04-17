@@ -40,7 +40,7 @@ public class WeatherData {
 	private HashMap<String, String> mNowData;
 
 	/** 今日详情 */
-	private ArrayList<HashMap<String, String>> mTodayDetails;
+	private ArrayList<HashMap<String, String>> mTodayDetailed;
 
 	/** 今晚天气 */
 	private HashMap<String, String> mTonightData;
@@ -67,7 +67,7 @@ public class WeatherData {
 	 */
 	private void init() {
 		mNowData = new HashMap<String, String>();
-		mTodayDetails = new ArrayList<HashMap<String, String>>();
+		mTodayDetailed = new ArrayList<HashMap<String, String>>();
 		mTonightData = new HashMap<String, String>();
 		mFutureData = new ArrayList<HashMap<String, String>>();
 		mHeadData = new HashMap<String, String>();
@@ -108,10 +108,10 @@ public class WeatherData {
 	/**
 	 * 获得今日详情
 	 * 
-	 * @return mTodayDetails 今天详情
+	 * @return mTodayDetailed 今天详情
 	 */
-	public ArrayList<HashMap<String, String>> getTodayDetails() {
-		return mTodayDetails;
+	public ArrayList<HashMap<String, String>> getTodayDetailed() {
+		return mTodayDetailed;
 	}
 
 	/**

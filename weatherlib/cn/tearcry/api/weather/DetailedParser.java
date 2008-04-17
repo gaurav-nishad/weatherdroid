@@ -42,7 +42,7 @@ public class DetailedParser implements Parser {
 
 	public static void main(String[] args) {
 
-		File file = new File("D:\\todaydf.txt");
+		File file = new File("D:\\TodayCHXX0141.txt");
 		WeatherData wd = new WeatherData();
 		InputSource source = null;
 		try {
@@ -52,12 +52,12 @@ public class DetailedParser implements Parser {
 			new DetailedParser(source, wd).parse();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		}catch(WeatherException ex) {
+		} catch (WeatherException ex) {
 			ex.printStackTrace();
 		}
 
 		if (wd.mDetailsParsed) {
-			ArrayList<HashMap<String, String>> hourdata = wd.getTodayDetails();
+			ArrayList<HashMap<String, String>> hourdata = wd.getTodayDetailed();
 			for (int i = 0; i < hourdata.size(); i++) {
 				HashMap<String, String> hour = hourdata.get(i);
 				Iterator<String> iter = hour.keySet().iterator();
@@ -84,7 +84,8 @@ public class DetailedParser implements Parser {
 
 	public void parse() throws WeatherException {
 		if (source == null) {
-			throw new WeatherException("Today details parse failed. Cause:InputSource is null");
+			throw new WeatherException(
+					"Today details parse failed. Cause:InputSource is null");
 		}
 		String str = null;
 		StringBuilder sb = null;
@@ -96,7 +97,8 @@ public class DetailedParser implements Parser {
 			while ((str = reader.readLine()) != null)
 				sb.append(str);
 		} catch (IOException ex) {
-			throw new WeatherException("Today details parse failed.Cause:IOException,read string failed");
+			throw new WeatherException(
+					"Today details parse failed.Cause:IOException,read string failed");
 		}
 
 		// 删去所有的单引号，便于解析
@@ -104,7 +106,7 @@ public class DetailedParser implements Parser {
 			return;
 		String xml = sb.toString();
 		xml = xml.replaceAll("'", "");
-		ArrayList<HashMap<String, String>> mTodayData = wData.getTodayDetails();
+		ArrayList<HashMap<String, String>> mTodayData = wData.getTodayDetailed();
 
 		sb = null;
 		// 拆分成行
@@ -142,11 +144,11 @@ public class DetailedParser implements Parser {
 				.lastIndexOf(")"));
 
 		hourData.put(WeatherKey.TIME, UnitConvert.convertTime(
-				"(yyyy,MM,dd,HH,mm,ss)","HH:mm", time));
+				"(yyyy,MM,dd,HH,mm,ss)", "HH:mm", time));
 
 		String all_str = str.substring(str.indexOf("),") + 2, str
 				.lastIndexOf(")"));
-		String[] condition = all_str.split(",");		
+		String[] condition = all_str.split(",");
 		String[] wind = condition[7].split(" ");
 
 		hourData.put(WeatherKey.ICON, condition[0]);
@@ -154,13 +156,13 @@ public class DetailedParser implements Parser {
 
 		// 如果不是公制，则转换
 		if (!UnitConvert.fromMetricSystem(units[0])) {
-			hourData.put(WeatherKey.HIGH_TEMP, UnitConvert.convertTemp(
+			hourData.put(WeatherKey.TEMPERATURE, UnitConvert.convertTemp(
 					condition[2], units[0]).split(" ")[0]);
-			hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
-					condition[3], units[0]).split(" ")[0]);
+			// hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
+			// condition[3], units[0]).split(" ")[0]);
 		} else {
-			hourData.put(WeatherKey.HIGH_TEMP, condition[2]);
-			hourData.put(WeatherKey.LOW_TEMP, condition[3]);
+			hourData.put(WeatherKey.TEMPERATURE, condition[2]);
+			// hourData.put(WeatherKey.LOW_TEMP, condition[3]);
 		}
 
 		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4]+"%");

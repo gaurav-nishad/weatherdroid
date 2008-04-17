@@ -81,7 +81,7 @@ public class UnitConvert {
 	 */
 	private static String convert(float value, String unit, float ratio,
 			String metricUnit, String standardUnit, boolean needRound) {
-		float ret = 0.0f;		
+		float ret = 0.0f;
 		String ut = null;
 
 		// 公制->标准制
@@ -110,7 +110,7 @@ public class UnitConvert {
 	 * @return 转换后的(包括单位）
 	 */
 	public static String convertTemp(String value, String unit) {
-		int ret = 0;
+		float ret = 0.0f;
 		int val = 0;
 
 		try {
@@ -123,14 +123,14 @@ public class UnitConvert {
 
 		// 摄氏->华氏
 		if (fromMetricSystem(unit)) {
-			ret = Math.round(32 + 1.8f * val);
+			ret = 1.8f * val + 32;
 			ut = "F";
 		} else {
 			// 华氏->摄氏
-			ret = Math.round((val - 32) / 1.8f);
+			ret = (val - 32) / 1.8f;
 			ut = "℃";
 		}
-		return ret + " " + ut;
+		return Math.round(ret) + " " + ut;
 	}
 
 	/**
@@ -154,11 +154,14 @@ public class UnitConvert {
 	}
 
 	/**
-	 *  转换气压
-	 * @param value 待转换的气压值（浮点）
-	 * @param unit  待转换的气压单位
+	 * 转换气压
+	 * 
+	 * @param value
+	 *            待转换的气压值（浮点）
+	 * @param unit
+	 *            待转换的气压单位
 	 * @return 转换后的气压+单位<br>
-	 * 如: 23.4 inches <I>可以使用split(" ")[0]和split(" ")[1] 分别获得气压值和单位</I>
+	 *         如: 23.4 inches <I>可以使用split(" ")[0]和split(" ")[1] 分别获得气压值和单位</I>
 	 */
 	public static String convertPressure(String value, String unit) {
 		float val = 0.0f;
@@ -211,9 +214,11 @@ public class UnitConvert {
 
 	/**
 	 * 转换气压状态
-	 * @param state 气压数字状态0-2 
+	 * 
+	 * @param state
+	 *            气压数字状态0-2
 	 * @return 气压状态箭头 <br>
-	 * →不变（或未知）  ↑上升 ↓下降
+	 *         →不变（或未知） ↑上升 ↓下降
 	 */
 	public static String convertPressureState(String state) {
 		int st = 0;
@@ -239,9 +244,9 @@ public class UnitConvert {
 		return ret;
 
 	}
-	
-	public static String convertDistance(String value,String unit) {
-		if(value.equals("999"))
+
+	public static String convertDistance(String value, String unit) {
+		if (value.equals("999"))
 			return WeatherKey.NA;
 		float val = 0.0f;
 		try {
@@ -253,10 +258,9 @@ public class UnitConvert {
 		return convert(val, unit, 1.609394f, WeatherKey.Unit.KM,
 				WeatherKey.Unit.MILES, true);
 	}
-		
 
 	public static void main(String[] args) {
-		System.out.println(convertDistance("1", WeatherKey.Unit.MILES));
-		
+		System.out.println(convertTemp("14", WeatherKey.Unit.Celsius));
+
 	}
 }
