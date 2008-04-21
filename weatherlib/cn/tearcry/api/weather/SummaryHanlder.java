@@ -19,12 +19,15 @@
 package cn.tearcry.api.weather;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -60,6 +63,8 @@ public class SummaryHanlder extends DefaultHandler {
 
 	private boolean now = false;
 
+	private Calendar todaydate;
+
 	private LinkedList<String> stack;
 
 	private WeatherData wData;
@@ -88,8 +93,8 @@ public class SummaryHanlder extends DefaultHandler {
 			} else {
 				today = false;
 				current = new HashMap<String, String>();
-				current.put(WeatherKey.TIME, attr.getValue(1));
-
+				current.put(WeatherKey.TIME, attr.getValue(2));
+			
 			}
 		} else if (qName.equalsIgnoreCase("cc")) {
 			now = true;
@@ -128,6 +133,8 @@ public class SummaryHanlder extends DefaultHandler {
 			headData.put(WeatherKey.TIMEZONE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("lsup")) { // 最后更新时间
 			String time = new String(ch, start, length);
+			
+			
 			if (now) {
 				nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
 						"MM/dd/yy h:mm a", time));
@@ -295,7 +302,8 @@ public class SummaryHanlder extends DefaultHandler {
 			// xr
 			// .parse(DataSourceManager
 			// .getInputSource("http://xoap.weather.com/weather/local/chxx0141?prod=xoap&unit=m&dayf=7&par=1057677963&key=fcac442aff2dd9c0"));
-			xr.parse(DataSourceManager.getInputSource(new File("d:\\04_09_xian_sum.xml")));
+			xr.parse(DataSourceManager.getInputSource(new File(
+					"d:\\04_09_xian_sum.xml")));
 			System.out.println("now/today/future: " + data.mNowParsed + "/"
 					+ data.mTodayParsed + "/" + data.mFutureParsed);
 

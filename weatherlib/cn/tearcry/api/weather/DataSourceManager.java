@@ -38,6 +38,8 @@ public class DataSourceManager {
 
 	public static final String ISO = "ISO-8859-1";
 
+	private static final int BUF_SIZE = 8192;
+
 	/**
 	 * @param args
 	 */
@@ -65,7 +67,7 @@ public class DataSourceManager {
 			return null;
 
 		source = new InputSource(new BufferedInputStream(new FileInputStream(
-				file)));
+				file), BUF_SIZE));
 		source.setEncoding(charset);
 
 		return source;
@@ -82,10 +84,10 @@ public class DataSourceManager {
 		URL url = new URL(addr);
 		InputSource source = null;
 
-		source = new InputSource(new BufferedInputStream(url.openStream()));
+		source = new InputSource(new BufferedInputStream(url.openStream(),
+				BUF_SIZE));
 		source.setEncoding(charset);
 
 		return source;
 	}
-
 }
