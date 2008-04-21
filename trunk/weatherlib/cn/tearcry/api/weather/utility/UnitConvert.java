@@ -48,10 +48,9 @@ public class UnitConvert {
 
 	public static String convertTime(String informat, String outformat,
 			String date) {
-		SimpleDateFormat in_formatter = new SimpleDateFormat(informat,
-				Locale.US);
-		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat,
-				Locale.US);
+		Locale.setDefault(Locale.ENGLISH);
+		SimpleDateFormat in_formatter = new SimpleDateFormat(informat);
+		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat);
 		GregorianCalendar now = new GregorianCalendar();
 		Date time = null;
 
@@ -257,6 +256,23 @@ public class UnitConvert {
 
 		return convert(val, unit, 1.609394f, WeatherKey.Unit.KM,
 				WeatherKey.Unit.MILES, true);
+	}
+
+	public static GregorianCalendar getCalendar(String informat,
+			String outformat, String time) {
+		GregorianCalendar cale = null;
+		Date date = null;
+		SimpleDateFormat in = new SimpleDateFormat(informat, Locale.US);
+		SimpleDateFormat out = new SimpleDateFormat(outformat, Locale.US);
+		try {
+			date = in.parse(time);
+			cale = new GregorianCalendar();
+			cale.setTime(date);
+		} catch (ParseException ex) {
+
+		}
+		return cale;
+
 	}
 
 	public static void main(String[] args) {

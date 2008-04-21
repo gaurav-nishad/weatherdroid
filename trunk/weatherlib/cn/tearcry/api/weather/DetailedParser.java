@@ -106,7 +106,8 @@ public class DetailedParser implements Parser {
 			return;
 		String xml = sb.toString();
 		xml = xml.replaceAll("'", "");
-		ArrayList<HashMap<String, String>> mTodayData = wData.getTodayDetailed();
+		ArrayList<HashMap<String, String>> mTodayData = wData
+				.getTodayDetailed();
 
 		sb = null;
 		// 拆分成行
@@ -156,16 +157,16 @@ public class DetailedParser implements Parser {
 
 		// 如果不是公制，则转换
 		if (!UnitConvert.fromMetricSystem(units[0])) {
-			hourData.put(WeatherKey.TEMPERATURE, UnitConvert.convertTemp(
+			hourData.put(WeatherKey.HIGH_TEMP, UnitConvert.convertTemp(
 					condition[2], units[0]).split(" ")[0]);
-			// hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
-			// condition[3], units[0]).split(" ")[0]);
+			hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
+					condition[3], units[0]).split(" ")[0]);
 		} else {
-			hourData.put(WeatherKey.TEMPERATURE, condition[2]);
-			// hourData.put(WeatherKey.LOW_TEMP, condition[3]);
+			hourData.put(WeatherKey.HIGH_TEMP, condition[2]);
+			hourData.put(WeatherKey.LOW_TEMP, condition[3]);
 		}
 
-		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4]+"%");
+		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4] + "%");
 		hourData.put(WeatherKey.WIND_DIRECTION, wind[1]);
 		// 如果不是公制，则转换
 		if (!UnitConvert.fromMetricSystem(wind[3]))
