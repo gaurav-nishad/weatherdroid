@@ -20,14 +20,11 @@ package cn.tearcry.api.weather;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -63,8 +60,6 @@ public class SummaryHanlder extends DefaultHandler {
 
 	private boolean now = false;
 
-	private Calendar todaydate;
-
 	private LinkedList<String> stack;
 
 	private WeatherData wData;
@@ -93,8 +88,11 @@ public class SummaryHanlder extends DefaultHandler {
 			} else {
 				today = false;
 				current = new HashMap<String, String>();
-				current.put(WeatherKey.TIME, attr.getValue(2));
-			
+
+				current.put(WeatherKey.TIME, UnitConvert.convertTime(
+						"MMM dd,E", "MM/dd EEE", attr.getValue(2) + ","
+								+ attr.getValue(1)));
+
 			}
 		} else if (qName.equalsIgnoreCase("cc")) {
 			now = true;
@@ -111,9 +109,7 @@ public class SummaryHanlder extends DefaultHandler {
 		if (stack.size() == 0)
 			return;
 		else if (stack.getFirst().equalsIgnoreCase("dnam")) {
-			String location = new String(ch, start, length);
-			headData.put(WeatherKey.LOCATION, location.substring(0, location
-					.indexOf(",")));
+			headData.put(WeatherKey.LOCATION, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("tm")) { // 当前时间
 			headData.put(WeatherKey.TIME, UnitConvert.convertTime("h:mm a",
 					"H:mm", new String(ch, start, length)));
@@ -133,8 +129,7 @@ public class SummaryHanlder extends DefaultHandler {
 			headData.put(WeatherKey.TIMEZONE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("lsup")) { // 最后更新时间
 			String time = new String(ch, start, length);
-			
-			
+
 			if (now) {
 				nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
 						"MM/dd/yy h:mm a", time));
@@ -187,12 +182,12 @@ public class SummaryHanlder extends DefaultHandler {
 
 		} else if (stack.getFirst().equalsIgnoreCase("r")
 				&& stack.contains("bar")) {
-			nowData.put(WeatherKey.PREESURE, new String(ch, start, length));
+			nowData.put(WeatherKey.PRESSURE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("d")
 				&& stack.contains("bar")) {
 			String state = new String(ch, start, length);
-			if (state.equals(WeatherKey.NA))
-				nowData.put(WeatherKey.PREESURE_STATE, "→");
+			nowData.put(WeatherKey.PREESURE_STATE, state);
+
 		}
 
 		else if (stack.getFirst().equalsIgnoreCase("s")
@@ -250,10 +245,12 @@ public class SummaryHanlder extends DefaultHandler {
 							length)
 							+ "%");
 			}
-		} else if (stack.getFirst().equalsIgnoreCase("i")
-				&& stack.contains("uv")) { // 紫外线强度
-			nowData.put(WeatherKey.UV, new String(ch, start, length));
-		} else if (stack.getFirst().equalsIgnoreCase("vis")) {
+		} /*
+			 * else if (stack.getFirst().equalsIgnoreCase("i") &&
+			 * stack.contains("uv")) { // 紫外线强度 nowData.put(WeatherKey.UV, new
+			 * String(ch, start, length)); }
+			 */
+		else if (stack.getFirst().equalsIgnoreCase("vis")) {
 			nowData.put(WeatherKey.VISIBILITY, new String(ch, start, length));
 
 		} else if (stack.getFirst().equalsIgnoreCase("ppcp")) { // 降水概率
@@ -307,7 +304,7 @@ public class SummaryHanlder extends DefaultHandler {
 			System.out.println("now/today/future: " + data.mNowParsed + "/"
 					+ data.mTodayParsed + "/" + data.mFutureParsed);
 
-			HashMap<String, String> head = data.getTodayData();
+			HashMap<String, String> head = data.getHeadData();
 			Iterator<String> ithead = head.keySet().iterator();
 			while (ithead.hasNext()) {
 				String k = ithead.next();

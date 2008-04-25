@@ -40,17 +40,17 @@ public class UnitConvert {
 			"E", "ESE", "ES", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW",
 			"NNW" };
 
-	private static final String OUT_FORMATTER = "yyyy/MM/dd HH:mm";
+	private static final String OUT_FORMATTER = "yyyy-MM-dd HH:mm";
 
 	public static String convertTime(String informat, String date) {
 		return convertTime(informat, OUT_FORMATTER, date);
 	}
-
+	
 	public static String convertTime(String informat, String outformat,
-			String date) {
-		Locale.setDefault(Locale.ENGLISH);
-		SimpleDateFormat in_formatter = new SimpleDateFormat(informat);
-		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat);
+			Locale locale, String date) {
+		
+		SimpleDateFormat in_formatter = new SimpleDateFormat(informat,Locale.US);
+		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat,locale);
 		GregorianCalendar now = new GregorianCalendar();
 		Date time = null;
 
@@ -64,6 +64,14 @@ public class UnitConvert {
 		}
 		return ret;
 	}
+
+	public static String convertTime(String informat, String outformat,
+			String date) {
+		
+		return convertTime(informat, outformat, Locale.US, date);
+	}
+
+	
 
 	/**
 	 * @param value
