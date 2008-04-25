@@ -95,7 +95,7 @@ public class WeatherKey {
 	public static final String TIMEZONE = "Time Zone";
 
 	/** 气压 具体数字 */
-	public static final String PREESURE = "Preesure";
+	public static final String PRESSURE = "Pressure";
 
 	/** 气压描述 上升或下降 */
 	public static final String PREESURE_STATE = "Preesure State";
@@ -146,7 +146,7 @@ public class WeatherKey {
 		public static final String UNIT_SPEED = "us";
 
 		/** 气压单位 */
-		public static final String UNIT_PREESURE = "up";
+		public static final String UNIT_PRESSURE = "up";
 
 		/** 温度单位 */
 		public static final String UNIT_TEMP = "ut";
@@ -167,7 +167,7 @@ public class WeatherKey {
 		public static final String MILES = "miles";
 
 		/** 公里/小时 */
-		public static final String KPH = "km/h";
+		public static final String KPH = "kmh";
 
 		/** 百帕 */
 		public static final String HPA = "hPa";

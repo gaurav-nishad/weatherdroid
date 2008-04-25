@@ -104,7 +104,7 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			// 能见度
 			nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
 			// 气压
-			nowData.put(WeatherKey.PREESURE, attr.getValue(2));
+			nowData.put(WeatherKey.PRESSURE, attr.getValue(2));
 			// 气压描述
 			nowData.put(WeatherKey.PREESURE_STATE, UnitConvert
 					.convertPressureState(attr.getValue(3)));
