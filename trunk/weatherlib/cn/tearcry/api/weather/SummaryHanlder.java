@@ -60,6 +60,8 @@ public class SummaryHanlder extends DefaultHandler {
 
 	private boolean now = false;
 
+	private String last_update;
+
 	private LinkedList<String> stack;
 
 	private WeatherData wData;
@@ -92,6 +94,9 @@ public class SummaryHanlder extends DefaultHandler {
 				current.put(WeatherKey.TIME, UnitConvert.convertTime(
 						"MMM dd,E", "MM/dd EEE", attr.getValue(2) + ","
 								+ attr.getValue(1)));
+				if (last_update != null)
+					current.put(WeatherKey.LAST_UPDATE, UnitConvert
+							.convertTime("MM/dd/yy h:mm a", last_update));
 
 			}
 		} else if (qName.equalsIgnoreCase("cc")) {
@@ -133,9 +138,14 @@ public class SummaryHanlder extends DefaultHandler {
 			if (now) {
 				nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
 						"MM/dd/yy h:mm a", time));
-			} else
+			} else {
 				todayData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
 						"MM/dd/yy h:mm a", time));
+				tonightData.put(WeatherKey.LAST_UPDATE, UnitConvert
+						.convertTime("MM/dd/yy h:mm a", time));
+				last_update = time;
+			}
+
 		} else if (stack.getFirst().equalsIgnoreCase("obst")) { // 观察点
 			headData.put(WeatherKey.OBSERVATION_STATION, new String(ch, start,
 					length));
@@ -304,7 +314,7 @@ public class SummaryHanlder extends DefaultHandler {
 			System.out.println("now/today/future: " + data.mNowParsed + "/"
 					+ data.mTodayParsed + "/" + data.mFutureParsed);
 
-			HashMap<String, String> head = data.getHeadData();
+			HashMap<String, String> head = data.getTonightData();
 			Iterator<String> ithead = head.keySet().iterator();
 			while (ithead.hasNext()) {
 				String k = ithead.next();
