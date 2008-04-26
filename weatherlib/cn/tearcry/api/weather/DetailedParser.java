@@ -112,6 +112,7 @@ public class DetailedParser implements Parser {
 		sb = null;
 		// 拆分成行
 		String[] data = xml.split(";");
+		
 		xml = null;
 		int line = 0;
 		// 找到第1行
@@ -122,14 +123,24 @@ public class DetailedParser implements Parser {
 		units = data[line].substring(data[line].indexOf("(") + 1,
 				data[line].indexOf(")")).split(", ");
 
+	/*	line++;
+		System.out.println(data[line].substring(data[line].indexOf("Date(")+5,data[line].indexOf("),")));*/
+		
 		line += 4;
-
+		
+		/*String[] lastupdate=data[line].substring(data[line].indexOf("Last Updated ")+13,data[line].lastIndexOf(")")).split(", ");
+		for(String s:data) {
+			System.out.println(s);
+		}
+		System.out.println(UnitConvert.convertTime("h:mm a", "HH:mm",lastupdate[2]));*/
+		
 		// 分别解析各个时段的天气
 		while (line < data.length)
 			parseHourCondition(data[line++], units, mTodayData);
 
 		wData.mDetailsParsed = true;
 		System.gc();
+
 	}
 
 	private void parseHourCondition(String str, String[] units,
@@ -157,13 +168,16 @@ public class DetailedParser implements Parser {
 
 		// 如果不是公制，则转换
 		if (!UnitConvert.fromMetricSystem(units[0])) {
-			hourData.put(WeatherKey.HIGH_TEMP, UnitConvert.convertTemp(
-					condition[2], units[0]).split(" ")[0]);
-			hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
-					condition[3], units[0]).split(" ")[0]);
+			hourData.put(WeatherKey.TEMPERATURE, UnitConvert.convertTemp(
+					condition[2], units[0]).split(" ")[0]);		
+//			hourData.put(WeatherKey.HIGH_TEMP, UnitConvert.convertTemp(
+//					condition[2], units[0]).split(" ")[0]);
+//			hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
+//					condition[3], units[0]).split(" ")[0]);
 		} else {
-			hourData.put(WeatherKey.HIGH_TEMP, condition[2]);
-			hourData.put(WeatherKey.LOW_TEMP, condition[3]);
+			hourData.put(WeatherKey.TEMPERATURE, condition[2]);
+//			hourData.put(WeatherKey.HIGH_TEMP, condition[2]);
+//			hourData.put(WeatherKey.LOW_TEMP, condition[3]);
 		}
 
 		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4] + "%");
