@@ -1,4 +1,4 @@
-package cn.tearcry.api.weather.utility;
+package cn.tearcry.api.weather;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import cn.tearcry.api.weather.WeatherKey;
 
 /* 
  * Copyright (C) 2008 Rajab Ma <majianle@gmail.com>
@@ -33,7 +32,7 @@ import cn.tearcry.api.weather.WeatherKey;
  * 
  */
 
-public class UnitConvert {
+public class UnitUtil {
 
 	/** 所有风向名称 */
 	private static final String[] WIND_DIRECTIONS = { "N", "NNE", "NE", "ENE",
@@ -265,12 +264,11 @@ public class UnitConvert {
 				WeatherKey.Unit.MILES, true);
 	}
 
-	public static GregorianCalendar getCalendar(String informat,
-			String outformat, String time) {
+	public static GregorianCalendar getCalendar(String informat, String time) {
 		GregorianCalendar cale = null;
 		Date date = null;
 		SimpleDateFormat in = new SimpleDateFormat(informat, Locale.US);
-		SimpleDateFormat out = new SimpleDateFormat(outformat, Locale.US);
+
 		try {
 			date = in.parse(time);
 			cale = new GregorianCalendar();
@@ -302,8 +300,13 @@ public class UnitConvert {
 		return ret;
 	}
 
+	public static boolean isLate(String dateStr1, String dateStr2) {
+		return isLate(dateStr1, "yyyy-MM-dd HH:mm:ss", dateStr2,
+				"yyyy-MM-dd HH:mm:ss");
+	}
+
 	public static void main(String[] args) {
-		System.out.println(isLate("2008-4-9 15:17:00","yyyy-MM-dd HH:mm:ss","2008-4-9 15:17:00","yyyy-MM-dd HH:mm:ss"));
+		System.out.println(isLate("2008-4-9 15:17:01","2008-4-9 15:17:00"));
 
 	}
 }

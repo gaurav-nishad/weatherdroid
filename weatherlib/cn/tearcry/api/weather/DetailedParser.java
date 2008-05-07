@@ -27,7 +27,6 @@ import java.util.Iterator;
 
 import org.xml.sax.InputSource;
 
-import cn.tearcry.api.weather.utility.UnitConvert;
 
 /**
  * @author Rajab
@@ -154,7 +153,7 @@ public class DetailedParser implements Parser {
 		String time = str.substring(str.indexOf("Date(") + 4, str
 				.lastIndexOf(")"));
 
-		hourData.put(WeatherKey.TIME, UnitConvert.convertTime(
+		hourData.put(WeatherKey.TIME, UnitUtil.convertTime(
 				"(yyyy,MM,dd,HH,mm,ss)", "HH:mm", time));
 
 		String all_str = str.substring(str.indexOf("),") + 2, str
@@ -166,12 +165,12 @@ public class DetailedParser implements Parser {
 		hourData.put(WeatherKey.DESCRIPTION, condition[1]);
 
 		// 如果不是公制，则转换
-		if (!UnitConvert.fromMetricSystem(units[0])) {
-			hourData.put(WeatherKey.TEMPERATURE, UnitConvert.convertTemp(
+		if (!UnitUtil.fromMetricSystem(units[0])) {
+			hourData.put(WeatherKey.TEMPERATURE, UnitUtil.convertTemp(
 					condition[2], units[0]).split(" ")[0]);
-			// hourData.put(WeatherKey.HIGH_TEMP, UnitConvert.convertTemp(
+			// hourData.put(WeatherKey.HIGH_TEMP, UnitUtil.convertTemp(
 			// condition[2], units[0]).split(" ")[0]);
-			// hourData.put(WeatherKey.LOW_TEMP, UnitConvert.convertTemp(
+			// hourData.put(WeatherKey.LOW_TEMP, UnitUtil.convertTemp(
 			// condition[3], units[0]).split(" ")[0]);
 		} else {
 			hourData.put(WeatherKey.TEMPERATURE, condition[2]);
@@ -182,8 +181,8 @@ public class DetailedParser implements Parser {
 		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4] + "%");
 		hourData.put(WeatherKey.WIND_DIRECTION, wind[1]);
 		// 如果不是公制，则转换
-		if (!UnitConvert.fromMetricSystem(wind[3]))
-			hourData.put(WeatherKey.WIND_SPEED, UnitConvert.convertWind(
+		if (!UnitUtil.fromMetricSystem(wind[3]))
+			hourData.put(WeatherKey.WIND_SPEED, UnitUtil.convertWind(
 					wind[2], wind[3]).split(" ")[0]);
 		else
 			hourData.put(WeatherKey.WIND_SPEED, wind[2]);

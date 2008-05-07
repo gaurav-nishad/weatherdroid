@@ -59,8 +59,6 @@ public class WeatherData {
 
 	protected boolean mNowParsed;
 
-	private boolean parseOver = false;
-
 	/**
 	 * 初始化天气数据
 	 * 
@@ -75,7 +73,7 @@ public class WeatherData {
 		mDetailsParsed = false;
 		mFutureParsed = false;
 		mTodayParsed = false;
-	
+
 	}
 
 	/**
