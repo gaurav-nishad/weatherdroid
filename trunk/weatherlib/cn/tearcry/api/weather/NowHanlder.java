@@ -38,7 +38,7 @@ import cn.tearcry.api.weather.utility.UnitConvert;
  * @author rajab
  * 
  */
-public class AuxiliaryHanlder extends DefaultHandler {
+public class NowHanlder extends DefaultHandler {
 	public static void main(String[] args) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp;
@@ -46,7 +46,7 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			sp = spf.newSAXParser();
 			XMLReader xr = sp.getXMLReader();
 			WeatherData data = new WeatherData();
-			AuxiliaryHanlder hanlder = new AuxiliaryHanlder(data);
+			NowHanlder hanlder = new NowHanlder(data);
 			xr.setContentHandler(hanlder);
 			xr.parse(DataSourceManager.getInputSource(new File(
 					"d:\\xian_yahoo.xml")));
@@ -73,19 +73,12 @@ public class AuxiliaryHanlder extends DefaultHandler {
 
 	}
 
-	private HashMap<String, String> headData;
-
-	private boolean lat = false;
-
-	private boolean lon = false;
-
 	private HashMap<String, String> nowData;
 
 	private WeatherData wData;
 
-	public AuxiliaryHanlder(WeatherData wData) {
+	public NowHanlder(WeatherData wData) {
 		nowData = wData.getNowData();
-		headData = wData.getHeadData();
 		this.wData = wData;
 	}
 
@@ -102,44 +95,27 @@ public class AuxiliaryHanlder extends DefaultHandler {
 			// 湿度
 			nowData.put(WeatherKey.HUMIDITY, attr.getValue(0) + "%");
 			// 能见度
+
 			nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
+
 			// 气压
 			nowData.put(WeatherKey.PRESSURE, attr.getValue(2));
 			// 气压描述
-			nowData.put(WeatherKey.PREESURE_STATE, UnitConvert
-					.convertPressureState(attr.getValue(3)));
-		} else if (qName.equalsIgnoreCase("geo:lat")) {
-			// 纬度
-			lat = true;
-		} else if (qName.equalsIgnoreCase("geo:long")) {
-			// 经度
-			lon = true;
+			// nowData.put(WeatherKey.PREESURE_STATE, UnitConvert
+			// .convertPressureState(attr.getValue(3)));
 		} else if (qName.equalsIgnoreCase("yweather:condition")) {
 			// 天气文字描述
 			nowData.put(WeatherKey.DESCRIPTION, attr.getValue(0));
 			// 图标
 			nowData.put(WeatherKey.ICON, attr.getValue(1));
 			nowData.put(WeatherKey.TEMPERATURE, attr.getValue(2));
-
+			nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+					"EEE, dd MMM yyyy h:mm a", attr.getValue(3)));
 		}
-
-	}
-
-	public void characters(char[] ch, int start, int length) {
-		if (lat) {
-			nowData.put(WeatherKey.LATITUDE, new String(ch, start, length));
-		} else if (lon) {
-			nowData.put(WeatherKey.LONGITUDE, new String(ch, start, length));
-		}
-
 	}
 
 	public void endElement(String uri, String localName, String qName) {
-		if (qName.equalsIgnoreCase("geo:lat")) {
-			lat = false;
-		} else if (qName.equalsIgnoreCase("geo:long")) {
-			lon = false;
-		} else if (qName.equals("yweather:condition"))
+		if (qName.equals("yweather:condition"))
 			wData.mNowParsed = true;
 
 	}

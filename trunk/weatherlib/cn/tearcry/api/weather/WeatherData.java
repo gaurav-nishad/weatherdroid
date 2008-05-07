@@ -134,4 +134,32 @@ public class WeatherData {
 		return mDetailsParsed && mFutureParsed && mNowParsed && mNowParsed;
 	}
 
+	/**
+	 * @return detailsParsed
+	 */
+	public boolean isDetailsParsed() {
+		return mDetailsParsed;
+	}
+
+	/**
+	 * @return futureParsed
+	 */
+	public boolean isFutureParsed() {
+		return mFutureParsed;
+	}
+
+	/**
+	 * @return nowParsed
+	 */
+	public boolean isNowParsed() {
+		return mNowParsed;
+	}
+
+	/**
+	 * @return todayParsed
+	 */
+	public boolean isTodayParsed() {
+		return mTodayParsed;
+	}
+
 }
