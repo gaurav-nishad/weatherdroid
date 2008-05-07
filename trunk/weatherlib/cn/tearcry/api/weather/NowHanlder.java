@@ -32,7 +32,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import cn.tearcry.api.weather.utility.UnitConvert;
 
 /**
  * @author rajab
@@ -87,7 +86,7 @@ public class NowHanlder extends DefaultHandler {
 
 		if (qName.equalsIgnoreCase("yweather:wind")) {
 			// 风向
-			nowData.put(WeatherKey.WIND_DIRECTION, UnitConvert
+			nowData.put(WeatherKey.WIND_DIRECTION, UnitUtil
 					.converWindDirection(attr.getValue(1)));
 			// 风速
 			nowData.put(WeatherKey.WIND_SPEED, attr.getValue(2));
@@ -101,7 +100,7 @@ public class NowHanlder extends DefaultHandler {
 			// 气压
 			nowData.put(WeatherKey.PRESSURE, attr.getValue(2));
 			// 气压描述
-			// nowData.put(WeatherKey.PREESURE_STATE, UnitConvert
+			// nowData.put(WeatherKey.PREESURE_STATE, UnitUtil
 			// .convertPressureState(attr.getValue(3)));
 		} else if (qName.equalsIgnoreCase("yweather:condition")) {
 			// 天气文字描述
@@ -109,7 +108,7 @@ public class NowHanlder extends DefaultHandler {
 			// 图标
 			nowData.put(WeatherKey.ICON, attr.getValue(1));
 			nowData.put(WeatherKey.TEMPERATURE, attr.getValue(2));
-			nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+			nowData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
 					"EEE, dd MMM yyyy h:mm a", attr.getValue(3)));
 		}
 	}

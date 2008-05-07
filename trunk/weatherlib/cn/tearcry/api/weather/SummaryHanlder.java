@@ -21,7 +21,6 @@ package cn.tearcry.api.weather;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,7 +34,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import cn.tearcry.api.weather.utility.UnitConvert;
 
 /**
  * @author rajab
@@ -91,11 +89,11 @@ public class SummaryHanlder extends DefaultHandler {
 				today = false;
 				current = new HashMap<String, String>();
 
-				current.put(WeatherKey.TIME, UnitConvert.convertTime(
+				current.put(WeatherKey.TIME, UnitUtil.convertTime(
 						"MMM dd,E", "MM/dd EEE", attr.getValue(2) + ","
 								+ attr.getValue(1)));
 				if (last_update != null)
-					current.put(WeatherKey.LAST_UPDATE, UnitConvert
+					current.put(WeatherKey.LAST_UPDATE, UnitUtil
 							.convertTime("MM/dd/yy h:mm a", last_update));
 
 			}
@@ -114,7 +112,7 @@ public class SummaryHanlder extends DefaultHandler {
 		else if (stack.getFirst().equalsIgnoreCase("dnam")) {
 			headData.put(WeatherKey.LOCATION, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("tm")) { // 当前时间
-			headData.put(WeatherKey.TIME, UnitConvert.convertTime("h:mm a",
+			headData.put(WeatherKey.TIME, UnitUtil.convertTime("h:mm a",
 					"H:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("lat")) {// 经纬度
 			headData.put(WeatherKey.LATITUDE, new String(ch, start, length));
@@ -122,20 +120,20 @@ public class SummaryHanlder extends DefaultHandler {
 			headData.put(WeatherKey.LONGITUDE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("sunr") // 日出日落时间
 				&& stack.contains("loc")) {
-			todayData.put(WeatherKey.SUN_RISE, UnitConvert.convertTime(
+			todayData.put(WeatherKey.SUN_RISE, UnitUtil.convertTime(
 					"h:mm a", "HH:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("suns")
 				&& stack.contains("loc")) {
-			todayData.put(WeatherKey.SUN_SET, UnitConvert.convertTime("h:mm a",
+			todayData.put(WeatherKey.SUN_SET, UnitUtil.convertTime("h:mm a",
 					"HH:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("zone")) { // 时区
 			headData.put(WeatherKey.TIMEZONE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("lsup")) { // 最后更新时间
 			String time = new String(ch, start, length);
 
-			todayData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+			todayData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
 					"MM/dd/yy h:mm a", time));
-			tonightData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+			tonightData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
 					"MM/dd/yy h:mm a", time));
 			last_update = time;
 
