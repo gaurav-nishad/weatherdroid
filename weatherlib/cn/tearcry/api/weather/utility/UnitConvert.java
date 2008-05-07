@@ -45,12 +45,13 @@ public class UnitConvert {
 	public static String convertTime(String informat, String date) {
 		return convertTime(informat, OUT_FORMATTER, date);
 	}
-	
+
 	public static String convertTime(String informat, String outformat,
 			Locale locale, String date) {
-		
-		SimpleDateFormat in_formatter = new SimpleDateFormat(informat,Locale.US);
-		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat,locale);
+
+		SimpleDateFormat in_formatter = new SimpleDateFormat(informat,
+				Locale.US);
+		SimpleDateFormat out_formatter = new SimpleDateFormat(outformat, locale);
 		GregorianCalendar now = new GregorianCalendar();
 		Date time = null;
 
@@ -67,11 +68,9 @@ public class UnitConvert {
 
 	public static String convertTime(String informat, String outformat,
 			String date) {
-		
+
 		return convertTime(informat, outformat, Locale.US, date);
 	}
-
-	
 
 	/**
 	 * @param value
@@ -280,11 +279,31 @@ public class UnitConvert {
 
 		}
 		return cale;
+	}
 
+	public static boolean isLate(String dateStr1, String formatter1,
+			String dateStr2, String formatter2) {
+		boolean ret = false;
+		SimpleDateFormat sdf1 = new SimpleDateFormat(formatter1, Locale.US);
+		SimpleDateFormat sdf2 = new SimpleDateFormat(formatter2, Locale.US);
+
+		Date date1 = null;
+		Date date2 = null;
+		try {
+			date1 = sdf1.parse(dateStr1);
+			date2 = sdf2.parse(dateStr2);
+			if (!date1.after(date2) && !date1.before(date2))
+				ret = false;
+			else
+				ret = date1.after(date2);
+		} catch (ParseException ex) {
+			ret = false;
+		}
+		return ret;
 	}
 
 	public static void main(String[] args) {
-		System.out.println(convertTemp("14", WeatherKey.Unit.Celsius));
+		System.out.println(isLate("2008-4-9 15:17:00","yyyy-MM-dd HH:mm:ss","2008-4-9 15:17:00","yyyy-MM-dd HH:mm:ss"));
 
 	}
 }

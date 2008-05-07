@@ -52,13 +52,13 @@ public class SummaryHanlder extends DefaultHandler {
 
 	private HashMap<String, String> current;
 
-	private HashMap<String, String> nowData;
+	// private HashMap<String, String> nowData;
 
 	private boolean today = false;
 
 	private boolean day = false;
 
-	private boolean now = false;
+	// private boolean now = false;
 
 	private String last_update;
 
@@ -71,7 +71,7 @@ public class SummaryHanlder extends DefaultHandler {
 		todayData = wData.getTodayData();
 		tonightData = wData.getTonightData();
 		headData = wData.getHeadData();
-		nowData = wData.getNowData();
+		// nowData = wData.getNowData();
 		stack = new LinkedList<String>();
 		this.wData = wData;
 	}
@@ -99,8 +99,6 @@ public class SummaryHanlder extends DefaultHandler {
 							.convertTime("MM/dd/yy h:mm a", last_update));
 
 			}
-		} else if (qName.equalsIgnoreCase("cc")) {
-			now = true;
 		} else if (qName.equalsIgnoreCase("part")) {
 			if (attr.getValue(0).equalsIgnoreCase("d")) {
 				day = true;
@@ -135,22 +133,15 @@ public class SummaryHanlder extends DefaultHandler {
 		} else if (stack.getFirst().equalsIgnoreCase("lsup")) { // 最后更新时间
 			String time = new String(ch, start, length);
 
-			if (now) {
-				nowData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
-						"MM/dd/yy h:mm a", time));
-			} else {
-				todayData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
-						"MM/dd/yy h:mm a", time));
-				tonightData.put(WeatherKey.LAST_UPDATE, UnitConvert
-						.convertTime("MM/dd/yy h:mm a", time));
-				last_update = time;
-			}
+			todayData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+					"MM/dd/yy h:mm a", time));
+			tonightData.put(WeatherKey.LAST_UPDATE, UnitConvert.convertTime(
+					"MM/dd/yy h:mm a", time));
+			last_update = time;
 
 		} else if (stack.getFirst().equalsIgnoreCase("obst")) { // 观察点
 			headData.put(WeatherKey.OBSERVATION_STATION, new String(ch, start,
 					length));
-		} else if (stack.getFirst().equalsIgnoreCase("tmp")) { // 实时温度
-			nowData.put(WeatherKey.TEMPERATURE, new String(ch, start, length));
 		}
 		// 最高温度为未来天气数据，今天的最高温度即为白天温度，最低温度为夜间温度
 		else if (stack.getFirst().equalsIgnoreCase("hi")) {
@@ -176,8 +167,6 @@ public class SummaryHanlder extends DefaultHandler {
 		 */
 		else if (stack.getFirst().equalsIgnoreCase("icon")) { // 图标
 			String icon = new String(ch, start, length);
-			if (now && !stack.contains("moon"))
-				nowData.put(WeatherKey.ICON, icon);
 
 			if (today) { // 今天的数据，分别判断白天还是晚上
 				if (day) // 白天
@@ -190,22 +179,12 @@ public class SummaryHanlder extends DefaultHandler {
 			} else if (day) // 未来的数据，只需白天的
 				current.put(WeatherKey.ICON, icon);
 
-		} else if (stack.getFirst().equalsIgnoreCase("r")
-				&& stack.contains("bar")) {
-			nowData.put(WeatherKey.PRESSURE, new String(ch, start, length));
-		} else if (stack.getFirst().equalsIgnoreCase("d")
-				&& stack.contains("bar")) {
-			String state = new String(ch, start, length);
-			nowData.put(WeatherKey.PREESURE_STATE, state);
-
 		}
 
 		else if (stack.getFirst().equalsIgnoreCase("s")
 				&& stack.contains("wind")) { // 速度，判断栈中是否有wind来判断是风速，因为s还有其他的速度
 			String speed = new String(ch, start, length);
-			if (now) {
-				nowData.put(WeatherKey.WIND_SPEED, speed);
-			} else if (today) {
+			if (today) {
 				if (day)
 					todayData.put(WeatherKey.WIND_SPEED, speed);
 				else
@@ -218,9 +197,7 @@ public class SummaryHanlder extends DefaultHandler {
 			String t = new String(ch, start, length);
 			if (!stack.contains("wind"))// 不包含wind 说明是天气描述
 			{
-				if (now && !stack.contains("moon") && !stack.contains("uv")) {
-					nowData.put(WeatherKey.DESCRIPTION, t);
-				} else if (today) {
+				if (today) {
 					if (day)
 						todayData.put(WeatherKey.DESCRIPTION, t);
 					else
@@ -230,9 +207,7 @@ public class SummaryHanlder extends DefaultHandler {
 				}
 
 			} else {
-				if (now) {
-					nowData.put(WeatherKey.WIND_DIRECTION, t);
-				} else if (today) {
+				if (today) {
 					if (day)
 						todayData.put(WeatherKey.WIND_DIRECTION, t);
 					else
@@ -242,9 +217,7 @@ public class SummaryHanlder extends DefaultHandler {
 			}
 
 		} else if (stack.getFirst().equalsIgnoreCase("hmid")) { // 湿度
-			if (now)
-				nowData.put(WeatherKey.HUMIDITY, new String(ch, start, length)
-						+ "%");
+
 			if (today) {
 				if (day)
 					todayData.put(WeatherKey.HUMIDITY, new String(ch, start,
@@ -260,10 +233,7 @@ public class SummaryHanlder extends DefaultHandler {
 			 * stack.contains("uv")) { // 紫外线强度 nowData.put(WeatherKey.UV, new
 			 * String(ch, start, length)); }
 			 */
-		else if (stack.getFirst().equalsIgnoreCase("vis")) {
-			nowData.put(WeatherKey.VISIBILITY, new String(ch, start, length));
-
-		} else if (stack.getFirst().equalsIgnoreCase("ppcp")) { // 降水概率
+		else if (stack.getFirst().equalsIgnoreCase("ppcp")) { // 降水概率
 			if (today) {
 				if (day)
 
@@ -285,10 +255,7 @@ public class SummaryHanlder extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) {
 		if (qName != null && stack.size() != 0)
 			stack.removeFirst();
-		if (qName.equalsIgnoreCase("cc")) {
-			now = false;
-			wData.mNowParsed = true;
-		} else if (qName.equalsIgnoreCase("day") && !today)
+		if (qName.equalsIgnoreCase("day") && !today)
 			futureData.add(current);
 		else if (qName.equalsIgnoreCase("weather")) {
 			wData.mTodayParsed = true;
@@ -314,7 +281,7 @@ public class SummaryHanlder extends DefaultHandler {
 			System.out.println("now/today/future: " + data.mNowParsed + "/"
 					+ data.mTodayParsed + "/" + data.mFutureParsed);
 
-			HashMap<String, String> head = data.getTonightData();
+			HashMap<String, String> head = data.getNowData();
 			Iterator<String> ithead = head.keySet().iterator();
 			while (ithead.hasNext()) {
 				String k = ithead.next();

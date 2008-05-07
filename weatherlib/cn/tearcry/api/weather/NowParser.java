@@ -28,13 +28,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author rajab
  * 
  */
-public class AuxiliaryParser implements Parser {
+public class NowParser implements Parser {
 
 	private InputSource is;
 
 	private WeatherData wData;
 
-	public AuxiliaryParser(InputSource is, WeatherData wData) throws WeatherException {
+	public NowParser(InputSource is, WeatherData wData) throws WeatherException {
 		if (is != null)
 			this.is = is;
 		else
@@ -56,7 +56,7 @@ public class AuxiliaryParser implements Parser {
 		SAXParserFactory spf = null;
 		SAXParser sp = null;
 		spf = SAXParserFactory.newInstance();
-		DefaultHandler hanlder = new AuxiliaryHanlder(wData);
+		DefaultHandler hanlder = new NowHanlder(wData);
 		try {
 			sp = spf.newSAXParser();
 			sp.parse(is, hanlder);
