@@ -32,7 +32,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 /**
  * @author rajab
  * 
@@ -48,7 +47,7 @@ public class NowHanlder extends DefaultHandler {
 			NowHanlder hanlder = new NowHanlder(data);
 			xr.setContentHandler(hanlder);
 			xr.parse(DataSourceManager.getInputSource(new File(
-					"d:\\xian_yahoo.xml")));
+					"d:\\04_09_xian_now.xml")));
 			HashMap<String, String> map = data.getNowData();
 			HashMap<String, String> head = data.getHeadData();
 			Iterator<String> ithead = head.keySet().iterator();
@@ -95,7 +94,12 @@ public class NowHanlder extends DefaultHandler {
 			nowData.put(WeatherKey.HUMIDITY, attr.getValue(0) + "%");
 			// 能见度
 
-			nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
+			try {
+				float vis = Math.round(Float.parseFloat(attr.getValue(1))/100)	;
+				nowData.put(WeatherKey.VISIBILITY, vis / 100.0 + "");
+			} catch (NumberFormatException ex) {
+				nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
+			}
 
 			// 气压
 			nowData.put(WeatherKey.PRESSURE, attr.getValue(2));

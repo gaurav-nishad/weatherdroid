@@ -167,7 +167,7 @@ public class WeatherKey {
 		public static final String MILES = "miles";
 
 		/** 公里/小时 */
-		public static final String KPH = "kmh";
+		public static final String KPH = "kph";
 
 		/** 百帕 */
 		public static final String HPA = "hPa";

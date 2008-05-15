@@ -301,8 +301,8 @@ public class UnitUtil {
 	}
 
 	public static boolean isLate(String dateStr1, String dateStr2) {
-		return isLate(dateStr1, "yyyy-MM-dd HH:mm:ss", dateStr2,
-				"yyyy-MM-dd HH:mm:ss");
+		return isLate(dateStr1, "yyyy-MM-dd HH:mm", dateStr2,
+				"yyyy-MM-dd HH:mm");
 	}
 
 	public static void main(String[] args) {
