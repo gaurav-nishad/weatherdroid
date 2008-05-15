@@ -47,7 +47,7 @@ public class NowHanlder extends DefaultHandler {
 			NowHanlder hanlder = new NowHanlder(data);
 			xr.setContentHandler(hanlder);
 			xr.parse(DataSourceManager.getInputSource(new File(
-					"d:\\04_09_xian_now.xml")));
+					"D:/GraduationDesign/data/05_10_xian_now.xml")));
 			HashMap<String, String> map = data.getNowData();
 			HashMap<String, String> head = data.getHeadData();
 			Iterator<String> ithead = head.keySet().iterator();
@@ -96,7 +96,7 @@ public class NowHanlder extends DefaultHandler {
 
 			try {
 				float vis = Math.round(Float.parseFloat(attr.getValue(1))/100)	;
-				nowData.put(WeatherKey.VISIBILITY, vis / 100.0 + "");
+				nowData.put(WeatherKey.VISIBILITY, vis  + "");
 			} catch (NumberFormatException ex) {
 				nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
 			}
