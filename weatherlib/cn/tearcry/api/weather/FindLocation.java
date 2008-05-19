@@ -18,12 +18,16 @@
  */
 package cn.tearcry.api.weather;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -32,20 +36,53 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class FindLocation extends DefaultHandler {
-	public static ArrayList<HashMap<String, String>> find(String locid)
-			throws Exception {
+	public static ArrayList<HashMap<String, String>> find(String locid) throws WeatherException
+			 {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp;
 		ArrayList<HashMap<String, String>> location = null;
 
-		sp = spf.newSAXParser();
-		XMLReader xr = sp.getXMLReader();
-		LocationHandler hanlder = new LocationHandler();
-		xr.setContentHandler(hanlder);
-		xr.parse(DataSourceManager.getInputSource(WeatherKey.Url.LOC_QUERY
-				+ locid));
-		location = hanlder.getLocList();
+		try {
+			sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+			LocationHandler hanlder = new LocationHandler();
+			xr.setContentHandler(hanlder);
+			xr.parse(DataSourceManager.getInputSource(WeatherKey.Url.LOC_QUERY
+					+ locid));
+			location = hanlder.getLocList();
+		} catch (Exception ex) {
+			throw new WeatherException(ex.getMessage());
+		} 
+	
 		return location;
+	}
+	
+	
+	public static void main(String[] args) {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser sp;
+		ArrayList<HashMap<String, String>> location = null;
+
+		try {
+			sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+			LocationHandler hanlder = new LocationHandler();
+			xr.setContentHandler(hanlder);
+			xr.parse(DataSourceManager.getInputSource(new File("D:/citylist.xml")));
+			location = hanlder.getLocList();
+			for(HashMap<String,String> map:location)	 {
+				String key=map.keySet().iterator().next();
+				System.out.println(key+":"+map.get(key));
+			}
+			
+		} catch (ParserConfigurationException ex) {
+			ex.printStackTrace();
+		} catch (SAXException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
 	}
 
 }
