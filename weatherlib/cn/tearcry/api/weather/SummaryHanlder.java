@@ -81,7 +81,7 @@ public class SummaryHanlder extends DefaultHandler {
 
 		if (qName.equalsIgnoreCase("loc")) {
 			// System.out.println(attr.getValue(0));
-			headData.put(WeatherKey.LOCATION_ID, attr.getValue(0));
+			headData.put(WeatherKey.Weather.LOCATION_ID, attr.getValue(0));
 		} else if (qName.equalsIgnoreCase("day")) {
 			if (attr.getValue(0).equals("0")) {
 				today = true;
@@ -89,11 +89,11 @@ public class SummaryHanlder extends DefaultHandler {
 				today = false;
 				current = new HashMap<String, String>();
 
-				current.put(WeatherKey.TIME, UnitUtil.convertTime(
+				current.put(WeatherKey.Weather.TIME, UnitUtil.convertTime(
 						"MMM dd,E", "MM/dd EEE", attr.getValue(2) + ","
 								+ attr.getValue(1)));
 				if (last_update != null)
-					current.put(WeatherKey.LAST_UPDATE, UnitUtil
+					current.put(WeatherKey.Weather.LAST_UPDATE, UnitUtil
 							.convertTime("MM/dd/yy h:mm a", last_update));
 
 			}
@@ -110,53 +110,53 @@ public class SummaryHanlder extends DefaultHandler {
 		if (stack.size() == 0)
 			return;
 		else if (stack.getFirst().equalsIgnoreCase("dnam")) {
-			headData.put(WeatherKey.LOCATION, new String(ch, start, length));
+			headData.put(WeatherKey.Weather.LOCATION, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("tm")) { // 当前时间
-			headData.put(WeatherKey.TIME, UnitUtil.convertTime("h:mm a",
+			headData.put(WeatherKey.Weather.TIME, UnitUtil.convertTime("h:mm a",
 					"H:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("lat")) {// 经纬度
-			headData.put(WeatherKey.LATITUDE, new String(ch, start, length));
+			headData.put(WeatherKey.Weather.LATITUDE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("lon")) {
-			headData.put(WeatherKey.LONGITUDE, new String(ch, start, length));
+			headData.put(WeatherKey.Weather.LONGITUDE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("sunr") // 日出日落时间
 				&& stack.contains("loc")) {
-			todayData.put(WeatherKey.SUN_RISE, UnitUtil.convertTime(
+			todayData.put(WeatherKey.Weather.SUN_RISE, UnitUtil.convertTime(
 					"h:mm a", "HH:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("suns")
 				&& stack.contains("loc")) {
-			todayData.put(WeatherKey.SUN_SET, UnitUtil.convertTime("h:mm a",
+			todayData.put(WeatherKey.Weather.SUN_SET, UnitUtil.convertTime("h:mm a",
 					"HH:mm", new String(ch, start, length)));
 		} else if (stack.getFirst().equalsIgnoreCase("zone")) { // 时区
-			headData.put(WeatherKey.TIMEZONE, new String(ch, start, length));
+			headData.put(WeatherKey.Weather.TIMEZONE, new String(ch, start, length));
 		} else if (stack.getFirst().equalsIgnoreCase("lsup")) { // 最后更新时间
 			String time = new String(ch, start, length);
 
-			todayData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
+			todayData.put(WeatherKey.Weather.LAST_UPDATE, UnitUtil.convertTime(
 					"MM/dd/yy h:mm a", time));
-			tonightData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
+			tonightData.put(WeatherKey.Weather.LAST_UPDATE, UnitUtil.convertTime(
 					"MM/dd/yy h:mm a", time));
 			last_update = time;
 
 		} else if (stack.getFirst().equalsIgnoreCase("obst")) { // 观察点
-			headData.put(WeatherKey.OBSERVATION_STATION, new String(ch, start,
+			headData.put(WeatherKey.Weather.OBSERVATION_STATION, new String(ch, start,
 					length));
 		}
 		// 最高温度为未来天气数据，今天的最高温度即为白天温度，最低温度为夜间温度
 		else if (stack.getFirst().equalsIgnoreCase("hi")) {
 			if (today)
-				todayData.put(WeatherKey.TEMPERATURE, new String(ch, start,
+				todayData.put(WeatherKey.Weather.TEMPERATURE, new String(ch, start,
 						length));
 			else
 				current
-						.put(WeatherKey.HIGH_TEMP,
+						.put(WeatherKey.Weather.HIGH_TEMP,
 								new String(ch, start, length));
 
 		} else if (stack.getFirst().equalsIgnoreCase("low")) {
 			if (today)
-				tonightData.put(WeatherKey.TEMPERATURE, new String(ch, start,
+				tonightData.put(WeatherKey.Weather.TEMPERATURE, new String(ch, start,
 						length));
 			else
-				current.put(WeatherKey.LOW_TEMP, new String(ch, start, length));
+				current.put(WeatherKey.Weather.LOW_TEMP, new String(ch, start, length));
 
 		}
 		/**
@@ -168,14 +168,14 @@ public class SummaryHanlder extends DefaultHandler {
 
 			if (today) { // 今天的数据，分别判断白天还是晚上
 				if (day) // 白天
-					todayData.put(WeatherKey.ICON,
+					todayData.put(WeatherKey.Weather.ICON,
 							new String(ch, start, length));
 				else
 					// 夜间
-					tonightData.put(WeatherKey.ICON, icon);
+					tonightData.put(WeatherKey.Weather.ICON, icon);
 
 			} else if (day) // 未来的数据，只需白天的
-				current.put(WeatherKey.ICON, icon);
+				current.put(WeatherKey.Weather.ICON, icon);
 
 		}
 
@@ -184,12 +184,12 @@ public class SummaryHanlder extends DefaultHandler {
 			String speed = new String(ch, start, length);
 			if (today) {
 				if (day)
-					todayData.put(WeatherKey.WIND_SPEED, speed);
+					todayData.put(WeatherKey.Weather.WIND_SPEED, speed);
 				else
-					tonightData.put(WeatherKey.WIND_SPEED, speed);
+					tonightData.put(WeatherKey.Weather.WIND_SPEED, speed);
 
 			} else if (day)
-				current.put(WeatherKey.WIND_SPEED, speed);
+				current.put(WeatherKey.Weather.WIND_SPEED, speed);
 
 		} else if (stack.getFirst().equalsIgnoreCase("t")) { // 文字描述，判断栈中是否有wind来判断是风向，因为t还有其他的文字描述
 			String t = new String(ch, start, length);
@@ -197,53 +197,53 @@ public class SummaryHanlder extends DefaultHandler {
 			{
 				if (today) {
 					if (day)
-						todayData.put(WeatherKey.DESCRIPTION, t);
+						todayData.put(WeatherKey.Weather.DESCRIPTION, t);
 					else
-						tonightData.put(WeatherKey.DESCRIPTION, t);
+						tonightData.put(WeatherKey.Weather.DESCRIPTION, t);
 				} else if (day) {
-					current.put(WeatherKey.DESCRIPTION, t);
+					current.put(WeatherKey.Weather.DESCRIPTION, t);
 				}
 
 			} else {
 				if (today) {
 					if (day)
-						todayData.put(WeatherKey.WIND_DIRECTION, t);
+						todayData.put(WeatherKey.Weather.WIND_DIRECTION, t);
 					else
-						tonightData.put(WeatherKey.WIND_DIRECTION, t);
+						tonightData.put(WeatherKey.Weather.WIND_DIRECTION, t);
 				} else if (day)
-					current.put(WeatherKey.WIND_DIRECTION, t);
+					current.put(WeatherKey.Weather.WIND_DIRECTION, t);
 			}
 
 		} else if (stack.getFirst().equalsIgnoreCase("hmid")) { // 湿度
 
 			if (today) {
 				if (day)
-					todayData.put(WeatherKey.HUMIDITY, new String(ch, start,
+					todayData.put(WeatherKey.Weather.HUMIDITY, new String(ch, start,
 							length)
 							+ "%");
 				else
-					tonightData.put(WeatherKey.HUMIDITY, new String(ch, start,
+					tonightData.put(WeatherKey.Weather.HUMIDITY, new String(ch, start,
 							length)
 							+ "%");
 			}
 		} /*
 			 * else if (stack.getFirst().equalsIgnoreCase("i") &&
-			 * stack.contains("uv")) { // 紫外线强度 nowData.put(WeatherKey.UV, new
+			 * stack.contains("uv")) { // 紫外线强度 nowData.put(WeatherKey.Weather.UV, new
 			 * String(ch, start, length)); }
 			 */
 		else if (stack.getFirst().equalsIgnoreCase("ppcp")) { // 降水概率
 			if (today) {
 				if (day)
 
-					todayData.put(WeatherKey.PRECIP_CHANCE, new String(ch,
+					todayData.put(WeatherKey.Weather.PRECIP_CHANCE, new String(ch,
 							start, length)
 							+ "%");
 				else
-					tonightData.put(WeatherKey.PRECIP_CHANCE, new String(ch,
+					tonightData.put(WeatherKey.Weather.PRECIP_CHANCE, new String(ch,
 							start, length)
 							+ "%");
 			} else if (day)
-				current.put(WeatherKey.PRECIP_CHANCE, new String(ch, start,
+				current.put(WeatherKey.Weather.PRECIP_CHANCE, new String(ch, start,
 						length)
 						+ "%");
 		}
