@@ -36,8 +36,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class FindLocation extends DefaultHandler {
-	public static ArrayList<HashMap<String, String>> find(String locid) throws WeatherException
-			 {
+	public static ArrayList<HashMap<String, String>> find(String locid)
+			throws WeatherException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp;
 		ArrayList<HashMap<String, String>> location = null;
@@ -52,12 +52,31 @@ public class FindLocation extends DefaultHandler {
 			location = hanlder.getLocList();
 		} catch (Exception ex) {
 			throw new WeatherException(ex.getMessage());
-		} 
-	
+		}
+
 		return location;
 	}
-	
-	
+
+	public static ArrayList<HashMap<String, String>> find(File file)
+			throws WeatherException {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser sp;
+		ArrayList<HashMap<String, String>> location = null;
+
+		try {
+			sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+			LocationHandler hanlder = new LocationHandler();
+			xr.setContentHandler(hanlder);
+			xr.parse(DataSourceManager.getInputSource(file));
+			location = hanlder.getLocList();
+		} catch (Exception ex) {
+			throw new WeatherException(ex.getMessage());
+		}
+
+		return location;
+	}
+
 	public static void main(String[] args) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp;
@@ -68,13 +87,14 @@ public class FindLocation extends DefaultHandler {
 			XMLReader xr = sp.getXMLReader();
 			LocationHandler hanlder = new LocationHandler();
 			xr.setContentHandler(hanlder);
-			xr.parse(DataSourceManager.getInputSource(new File("D:/citylist.xml")));
+			xr.parse(DataSourceManager.getInputSource(new File(
+					"D:/citylist.xml")));
 			location = hanlder.getLocList();
-			for(HashMap<String,String> map:location)	 {
-				String key=map.keySet().iterator().next();
-				System.out.println(key+":"+map.get(key));
+			for (HashMap<String, String> map : location) {
+				String key = map.keySet().iterator().next();
+				System.out.println(key + ":" + map.get(key));
 			}
-			
+
 		} catch (ParserConfigurationException ex) {
 			ex.printStackTrace();
 		} catch (SAXException ex) {
@@ -82,7 +102,7 @@ public class FindLocation extends DefaultHandler {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		
+
 	}
 
 }

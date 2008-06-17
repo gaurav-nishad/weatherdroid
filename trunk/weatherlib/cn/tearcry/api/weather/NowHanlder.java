@@ -85,34 +85,34 @@ public class NowHanlder extends DefaultHandler {
 
 		if (qName.equalsIgnoreCase("yweather:wind")) {
 			// 风向
-			nowData.put(WeatherKey.WIND_DIRECTION, UnitUtil
+			nowData.put(WeatherKey.Weather.WIND_DIRECTION, UnitUtil
 					.converWindDirection(attr.getValue(1)));
 			// 风速
-			nowData.put(WeatherKey.WIND_SPEED, attr.getValue(2));
+			nowData.put(WeatherKey.Weather.WIND_SPEED, attr.getValue(2));
 		} else if (qName.equalsIgnoreCase("yweather:atmosphere")) {
 			// 湿度
-			nowData.put(WeatherKey.HUMIDITY, attr.getValue(0) + "%");
+			nowData.put(WeatherKey.Weather.HUMIDITY, attr.getValue(0) + "%");
 			// 能见度
 
 			try {
 				float vis = Math.round(Float.parseFloat(attr.getValue(1))/100)	;
-				nowData.put(WeatherKey.VISIBILITY, vis  + "");
+				nowData.put(WeatherKey.Weather.VISIBILITY, vis  + "");
 			} catch (NumberFormatException ex) {
-				nowData.put(WeatherKey.VISIBILITY, attr.getValue(1));
+				nowData.put(WeatherKey.Weather.VISIBILITY, attr.getValue(1));
 			}
 
 			// 气压
-			nowData.put(WeatherKey.PRESSURE, attr.getValue(2));
+			nowData.put(WeatherKey.Weather.PRESSURE, attr.getValue(2));
 			// 气压描述
-			// nowData.put(WeatherKey.PREESURE_STATE, UnitUtil
+			// nowData.put(WeatherKey.Weather.PREESURE_STATE, UnitUtil
 			// .convertPressureState(attr.getValue(3)));
 		} else if (qName.equalsIgnoreCase("yweather:condition")) {
 			// 天气文字描述
-			nowData.put(WeatherKey.DESCRIPTION, attr.getValue(0));
+			nowData.put(WeatherKey.Weather.DESCRIPTION, attr.getValue(0));
 			// 图标
-			nowData.put(WeatherKey.ICON, attr.getValue(1));
-			nowData.put(WeatherKey.TEMPERATURE, attr.getValue(2));
-			nowData.put(WeatherKey.LAST_UPDATE, UnitUtil.convertTime(
+			nowData.put(WeatherKey.Weather.ICON, attr.getValue(1));
+			nowData.put(WeatherKey.Weather.TEMPERATURE, attr.getValue(2));
+			nowData.put(WeatherKey.Weather.LAST_UPDATE, UnitUtil.convertTime(
 					"EEE, dd MMM yyyy h:mm a", attr.getValue(3)));
 		}
 	}

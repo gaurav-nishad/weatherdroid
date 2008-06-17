@@ -21,123 +21,127 @@ package cn.tearcry.api.weather;
 /*
  * 定义天气预报内容的相关字段
  */
-public class WeatherKey {
-	/** 地区编号 */
-	public static final String LOCATION_ID = "Location ID";
+public interface WeatherKey {
+	public interface Weather {
+		/** 地区编号 */
+		public static final String LOCATION_ID = "Location ID";
 
-	/** 今天白天 */
-	public static final String TODAY = "Today";
+		/** 今天白天 */
+		public static final String TODAY = "Today";
 
-	/** 今天夜间 */
-	public static final String TONIGHT = "Tonight";
+		/** 今天夜间 */
+		public static final String TONIGHT = "Tonight";
 
-	/** 今日详情 */
-	public static final String TODAY_DETAILED = "TodayDetailed";
+		/** 今日详情 */
+		public static final String TODAY_DETAILED = "TodayDetailed";
 
-	/** 未来 */
-	public static final String FUTURE = "Future";
+		/** 未来 */
+		public static final String FUTURE = "Future";
 
-	/** 现在 */
-	public static final String NOW = "Now";
+		/** 现在 */
+		public static final String NOW = "Now";
 
-	/** 地名 */
-	public static final String LOCATION = "Location";
+		/** 地名 */
+		public static final String LOCATION = "Location";
 
-	/** 风力 */
-	public static final String WIND = "Wind";
+		/** 风力 */
+		public static final String WIND = "Wind";
 
-	/** 风速 */
-	public static final String WIND_SPEED = "Wind Speed";
+		/** 风速 */
+		public static final String WIND_SPEED = "Wind Speed";
 
-	/** 风向 */
-	public static final String WIND_DIRECTION = "Wind Direction";
+		/** 风向 */
+		public static final String WIND_DIRECTION = "Wind Direction";
 
-	/** 时间 */
-	public static final String TIME = "Time";
+		/** 时间 */
+		public static final String TIME = "Time";
 
-	/** 日出时间 */
-	public static final String SUN_RISE = "Sunrise";
+		/** 日出时间 */
+		public static final String SUN_RISE = "Sunrise";
 
-	/** 日落时间 */
-	public static final String SUN_SET = "Sunset";
+		/** 日落时间 */
+		public static final String SUN_SET = "Sunset";
 
-	/**
-	 * 经度:<br>
-	 * <i>东经为正，西经为负 </i>
-	 */
-	public static final String LONGITUDE = "Longitude";
+		/**
+		 * 经度:<br>
+		 * <i>东经为正，西经为负 </i>
+		 */
+		public static final String LONGITUDE = "Longitude";
 
-	/**
-	 * 纬度:<br>
-	 * <i>北纬为正，南纬为负 </i>
-	 */
-	public static final String LATITUDE = "Latitude";
+		/**
+		 * 纬度:<br>
+		 * <i>北纬为正，南纬为负 </i>
+		 */
+		public static final String LATITUDE = "Latitude";
 
-	/** 最后更新时间 */
-	public static final String LAST_UPDATE = "Last Update Time";
+		/** 最后更新时间 */
+		public static final String LAST_UPDATE = "Last Update Time";
 
-	/** 平均温度 */
-	public static final String TEMPERATURE = "Temperature";
+		/** 平均温度 */
+		public static final String TEMPERATURE = "Temperature";
 
-	/** 最高温度 */
-	public static final String HIGH_TEMP = "High Temperature";
+		/** 最高温度 */
+		public static final String HIGH_TEMP = "High Temperature";
 
-	/** 最低温度 */
-	public static final String LOW_TEMP = "Low Temperature";
+		/** 最低温度 */
+		public static final String LOW_TEMP = "Low Temperature";
 
-	/** 体感温度 */
-	public static final String FEELS_LIKE = "Feels Like";
+		/** 体感温度 */
+		public static final String FEELS_LIKE = "Feels Like";
 
-	/**
-	 * 时区:<br>
-	 * <i>向东为正，向西方为负 </i>
-	 */
-	public static final String TIMEZONE = "Time Zone";
+		/**
+		 * 时区:<br>
+		 * <i>向东为正，向西方为负 </i>
+		 */
+		public static final String TIMEZONE = "Time Zone";
 
-	/** 气压 具体数字 */
-	public static final String PRESSURE = "Pressure";
+		/** 气压 具体数字 */
+		public static final String PRESSURE = "Pressure";
 
-	/** 气压描述 上升或下降 */
-	public static final String PREESURE_STATE = "Preesure State";
+		/** 气压描述 上升或下降 */
+		public static final String PREESURE_STATE = "Preesure State";
 
-	/** 天气情况图标 */
-	public static final String ICON = "Icon";
+		/** 天气情况图标 */
+		public static final String ICON = "Icon";
 
-	/** 天气状况 */
-	public static final String DESCRIPTION = "Description";
+		/** 天气状况 */
+		public static final String DESCRIPTION = "Description";
 
-	/** 能见度 */
-	public static final String VISIBILITY = "Visibility";
+		/** 能见度 */
+		public static final String VISIBILITY = "Visibility";
 
-	/** 相对湿度 */
-	public static final String HUMIDITY = "Humidity";
+		/** 相对湿度 */
+		public static final String HUMIDITY = "Humidity";
 
-	/** 紫外线强度描述（文字) */
-	public static final String UV = "UV";
+		/** 紫外线强度描述（文字) */
+		public static final String UV = "UV";
 
-	/** 降水概率 */
-	public static final String PRECIP_CHANCE = "Precipition Chance";
+		/** 降水概率 */
+		public static final String PRECIP_CHANCE = "Precipition Chance";
 
-	/** 观察站 */
-	public static final String OBSERVATION_STATION = "Observation Station";
+		/** 观察站 */
+		public static final String OBSERVATION_STATION = "Observation Station";
 
-	/** 不可用 */
-	public static final String NA = "N/A";
+		/** 不可用 */
+		public static final String NA = "N/A";
 
-	/** 日志标签 */
-	public static final String LOGTAG = "Weatherdroid";
+		/** 日志标签 */
+		public static final String LOGTAG = "Weatherdroid";
 
-	/** 语言 */
-	public static final String LANGUAGE = "Language";
+		/** 语言 */
+		public static final String LANGUAGE = "Language";
 
-	/** 未来天数 */
-	public static final String FUTURE_DAYS = "Future Days";
+		/** 未来天数 */
+		public static final String FUTURE_DAYS = "Future Days";
 
-	/** 详情小时 */
-	public static final String DETAILED_HOURS = "Detailed Hours";
+		/** 详情小时 */
+		public static final String DETAILED_HOURS = "Detailed Hours";
+
+		public static final String LOCATION_NUM = "location_num";
+	}
 
 	/** 单位 */
-	public static class Unit {
+	public  interface Unit {
 
 		/** 距离单位 */
 		public static final String UNIT_DISTANCE = "ud";
@@ -192,7 +196,7 @@ public class WeatherKey {
 
 	}
 
-	public static class Url {
+	public  interface Url {
 		/** Yahoo天气RSS请求URL */
 		public static final String YAHOO_URL = "http://weather.yahooapis.com/forecastrss?u=c&p=";
 

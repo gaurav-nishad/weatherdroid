@@ -127,7 +127,7 @@ public class DetailedParser implements Parser {
 		String time = str.substring(str.indexOf("Date(") + 4, str
 				.lastIndexOf(")"));
 
-		hourData.put(WeatherKey.TIME, UnitUtil.convertTime(
+		hourData.put(WeatherKey.Weather.TIME, UnitUtil.convertTime(
 				"(yyyy,MM,dd,HH,mm,ss)", "HH:mm", time));
 		if (year == null) {
 			year = UnitUtil.convertTime("(yyyy,MM,dd,HH,mm,ss)", ",yyyy", time);
@@ -136,38 +136,38 @@ public class DetailedParser implements Parser {
 			lsup = UnitUtil.convertTime("EEE,MMM,d,h:m,a,yyyy", lsup_str
 					.toString());
 		}
-		hourData.put(WeatherKey.LAST_UPDATE, lsup);
+		hourData.put(WeatherKey.Weather.LAST_UPDATE, lsup);
 
 		String all_str = str.substring(str.indexOf("),") + 2, str
 				.lastIndexOf(")"));
 		String[] condition = all_str.split(",");
 		String[] wind = condition[7].split(" ");
 
-		hourData.put(WeatherKey.ICON, condition[0]);
-		hourData.put(WeatherKey.DESCRIPTION, condition[1]);
+		hourData.put(WeatherKey.Weather.ICON, condition[0]);
+		hourData.put(WeatherKey.Weather.DESCRIPTION, condition[1]);
 
 		// 如果不是公制，则转换
 		if (!UnitUtil.fromMetricSystem(units[0])) {
-			hourData.put(WeatherKey.TEMPERATURE, UnitUtil.convertTemp(
+			hourData.put(WeatherKey.Weather.TEMPERATURE, UnitUtil.convertTemp(
 					condition[2], units[0]).split(" ")[0]);
 			// hourData.put(WeatherKey.HIGH_TEMP, UnitUtil.convertTemp(
 			// condition[2], units[0]).split(" ")[0]);
 			// hourData.put(WeatherKey.LOW_TEMP, UnitUtil.convertTemp(
 			// condition[3], units[0]).split(" ")[0]);
 		} else {
-			hourData.put(WeatherKey.TEMPERATURE, condition[2]);
+			hourData.put(WeatherKey.Weather.TEMPERATURE, condition[2]);
 			// hourData.put(WeatherKey.HIGH_TEMP, condition[2]);
 			// hourData.put(WeatherKey.LOW_TEMP, condition[3]);
 		}
 
-		hourData.put(WeatherKey.PRECIP_CHANCE, condition[4] + "%");
-		hourData.put(WeatherKey.WIND_DIRECTION, wind[1]);
+		hourData.put(WeatherKey.Weather.PRECIP_CHANCE, condition[4] + "%");
+		hourData.put(WeatherKey.Weather.WIND_DIRECTION, wind[1]);
 		// 如果不是公制，则转换
 		if (!UnitUtil.fromMetricSystem(wind[3]))
-			hourData.put(WeatherKey.WIND_SPEED, UnitUtil.convertWind(wind[2],
+			hourData.put(WeatherKey.Weather.WIND_SPEED, UnitUtil.convertWind(wind[2],
 					wind[3]).split(" ")[0]);
 		else
-			hourData.put(WeatherKey.WIND_SPEED, wind[2]);
+			hourData.put(WeatherKey.Weather.WIND_SPEED, wind[2]);
 
 		todayData.add(hourData);
 	}

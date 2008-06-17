@@ -129,7 +129,7 @@ public class WeatherData {
 	 * @return parseOver
 	 */
 	public boolean isParseOver() {
-		return mDetailsParsed && mFutureParsed && mNowParsed && mNowParsed;
+		return mDetailsParsed && mFutureParsed && mNowParsed ;
 	}
 
 	/**
@@ -158,6 +158,10 @@ public class WeatherData {
 	 */
 	public boolean isTodayParsed() {
 		return mTodayParsed;
+	}
+	
+	public void setSummaryParsed(boolean parsed) {
+		mTodayParsed=mFutureParsed=parsed;
 	}
 
 }

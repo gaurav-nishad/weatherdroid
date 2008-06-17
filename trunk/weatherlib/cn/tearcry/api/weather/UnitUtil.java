@@ -210,7 +210,7 @@ public class UnitUtil {
 		try {
 			deg = Integer.parseInt(degrees);
 		} catch (NumberFormatException ex) {
-			return WeatherKey.NA;
+			return WeatherKey.Weather.NA;
 		}
 		float stepSize = 360 / WIND_DIRECTIONS.length;
 		int index = Math.round(deg / stepSize);
@@ -252,7 +252,7 @@ public class UnitUtil {
 
 	public static String convertDistance(String value, String unit) {
 		if (value.equals("999"))
-			return WeatherKey.NA;
+			return WeatherKey.Weather.NA;
 		float val = 0.0f;
 		try {
 			val = Float.valueOf(value).floatValue();
