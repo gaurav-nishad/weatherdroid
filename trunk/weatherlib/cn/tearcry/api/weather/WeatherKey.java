@@ -162,7 +162,7 @@ public interface WeatherKey {
 		public static final String MPH = "mph";
 
 		/** 华氏温度 */
-		public static final String Fahrenheit = "°F";
+		public static final String Fahrenheit = "℉";
 
 		/** 摄氏温度 */
 		public static final String Celsius = "°C";
