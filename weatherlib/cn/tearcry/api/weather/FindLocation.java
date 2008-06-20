@@ -62,7 +62,7 @@ public class FindLocation extends DefaultHandler {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp;
 		ArrayList<HashMap<String, String>> location = null;
-
+		
 		try {
 			sp = spf.newSAXParser();
 			XMLReader xr = sp.getXMLReader();
