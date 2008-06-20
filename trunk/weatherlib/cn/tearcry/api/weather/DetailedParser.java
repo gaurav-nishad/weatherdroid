@@ -31,6 +31,26 @@ import org.xml.sax.InputSource;
  * @author Rajab
  * 
  */
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
 public class DetailedParser implements Parser {
 
 	private String year = null;
@@ -50,6 +70,9 @@ public class DetailedParser implements Parser {
 		this.wData = wData;
 	}
 
+	/* （非 Javadoc）
+	 * @see cn.tearcry.api.weather.Parser#parse()
+	 */
 	public void parse() throws WeatherException {
 		if (source == null) {
 			throw new WeatherException(

@@ -32,6 +32,18 @@ import java.util.Locale;
  * 
  */
 
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
+/**
+ * @author 马建乐
+ *
+ */
 public class UnitUtil {
 
 	/** 所有风向名称 */
@@ -39,12 +51,26 @@ public class UnitUtil {
 			"E", "ESE", "ES", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW",
 			"NNW" };
 
+	/** 默认时间输出格式 */
 	private static final String OUT_FORMATTER = "yyyy-MM-dd HH:mm";
-
+	
+	/**
+	 * 将输入的以指定时间格式字符串转换成默认输出格式的形式
+	 * @param informat 输入的时间格式
+	 * @param date 要转换的时间字符串
+	 * @return 转换成默认输出时间格式的字符串
+	 */
 	public static String convertTime(String informat, String date) {
 		return convertTime(informat, OUT_FORMATTER, date);
 	}
 
+	/**
+	 * @param informat
+	 * @param outformat
+	 * @param locale
+	 * @param date
+	 * @return
+	 */
 	public static String convertTime(String informat, String outformat,
 			Locale locale, String date) {
 
@@ -279,6 +305,13 @@ public class UnitUtil {
 		return cale;
 	}
 
+	/**
+	 * @param dateStr1
+	 * @param formatter1
+	 * @param dateStr2
+	 * @param formatter2
+	 * @return
+	 */
 	public static boolean isLate(String dateStr1, String formatter1,
 			String dateStr2, String formatter2) {
 		boolean ret = false;
@@ -300,6 +333,11 @@ public class UnitUtil {
 		return ret;
 	}
 
+	/**
+	 * @param dateStr1
+	 * @param dateStr2
+	 * @return
+	 */
 	public static boolean isLate(String dateStr1, String dateStr2) {
 		return isLate(dateStr1, "yyyy-MM-dd HH:mm", dateStr2,
 				"yyyy-MM-dd HH:mm");

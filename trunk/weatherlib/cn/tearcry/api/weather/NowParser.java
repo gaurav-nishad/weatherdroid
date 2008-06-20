@@ -34,6 +34,11 @@ public class NowParser implements Parser {
 
 	private WeatherData wData;
 
+	/**
+	 * @param is
+	 * @param wData
+	 * @throws WeatherException
+	 */
 	public NowParser(InputSource is, WeatherData wData) throws WeatherException {
 		if (is != null)
 			this.is = is;

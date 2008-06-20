@@ -35,7 +35,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author rajab
  * 
  */
-public class FindLocation extends DefaultHandler {
+public class LocationParser extends DefaultHandler {
 	public static ArrayList<HashMap<String, String>> find(String locid)
 			throws WeatherException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
