@@ -39,6 +39,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author rajab
  * 
  */
+/**
+ * @author 马建乐
+ *
+ */
 public class SummaryHanlder extends DefaultHandler {
 	private ArrayList<HashMap<String, String>> futureData;
 
@@ -64,6 +68,9 @@ public class SummaryHanlder extends DefaultHandler {
 
 	private WeatherData wData;
 
+	/**
+	 * @param wData
+	 */
 	public SummaryHanlder(WeatherData wData) {
 		futureData = wData.getFutureData();
 		todayData = wData.getTodayData();
@@ -74,6 +81,9 @@ public class SummaryHanlder extends DefaultHandler {
 		this.wData = wData;
 	}
 
+	/* （非 Javadoc）
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attr) {
 		if (qName != null)
@@ -249,7 +259,11 @@ public class SummaryHanlder extends DefaultHandler {
 		}
 
 	}
+	
 
+	/* （非 Javadoc）
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement(String uri, String localName, String qName) {
 		if (qName != null && stack.size() != 0)
 			stack.removeFirst();
